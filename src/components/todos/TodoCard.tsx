@@ -6,28 +6,32 @@ import { formatDateToString } from 'utils/date';
 import { TagTip } from './TagTip';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
+import { finishTodo } from 'utils/apis/todo';
 
 const DEBOUNSE_TIME = 600; // ms
 
 interface Props {
   todo: Todo;
+  omCompleteFinish: () => void;
 }
 
-export const TodoCard: React.VFC<Props> = ({ todo }) => {
+export const TodoCard: React.VFC<Props> = ({ todo, omCompleteFinish }) => {
   const [checked, setChecked] = useState(false);
 
-  const toggleCheck = () => {
-    setChecked(!checked);
-  };
-
   useDebounce(
-    () => {
-      // finishTodo()
-      console.log(1);
+    async () => {
+      if (checked === true) {
+        await finishTodo(todo.id);
+        omCompleteFinish();
+      }
     },
     DEBOUNSE_TIME,
     [checked],
   );
+
+  const toggleCheck = () => {
+    setChecked(!checked);
+  };
 
   return (
     <Container $checked={checked}>
@@ -35,7 +39,7 @@ export const TodoCard: React.VFC<Props> = ({ todo }) => {
         <CheckBox
           type="checkbox"
           checked={checked}
-          onClick={toggleCheck}
+          onChange={toggleCheck}
         ></CheckBox>
         <Title>{todo.title}</Title>
       </TitleSectionConrainer>
