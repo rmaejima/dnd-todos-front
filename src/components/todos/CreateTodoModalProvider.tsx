@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { FaPlus } from 'react-icons/fa';
 import { IconButton } from 'components/common/IconButton';
 import { colors } from 'utils/theme';
+import { Button } from 'components/common/Button';
 
 export const CreateTodoModalProvider: React.VFC = () => {
   const [Modal, open, close] = useModal('root', {
@@ -21,7 +22,9 @@ export const CreateTodoModalProvider: React.VFC = () => {
       <Modal>
         <ModalContainer>
           <ModalTitle>新しいTODO</ModalTitle>
-          <button onClick={close}>CLOSE</button>
+          <Button color={colors.error[500]} onClick={close}>
+            キャンセル
+          </Button>
         </ModalContainer>
       </Modal>
     </>
