@@ -13,7 +13,14 @@ export const TodoList: React.VFC = () => {
       {isLoading && '読み込み中です'}
 
       <CardListContainer>
-        {todos && todos.map((todo) => <TodoCard key={todo.id} todo={todo} />)}
+        {todos &&
+          todos.map((todo) => (
+            <TodoCard
+              key={todo.id}
+              todo={todo}
+              omCompleteFinish={refetchAllTodos}
+            />
+          ))}
       </CardListContainer>
       <CreateTodoModalProvider onCompleteCreate={refetchAllTodos} />
     </>
