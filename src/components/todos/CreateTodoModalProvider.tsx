@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import { TagTip } from './TagTip';
 import { createTodo } from 'utils/apis/todo';
 import { TodoCreateRequest } from 'types/todo';
+import { stringNotEmpty } from 'utils/hooks/useValidation';
 
 interface Props {
   onCompleteCreate: () => void;
@@ -91,6 +92,7 @@ export const CreateTodoModalProvider: React.VFC<Props> = ({
             value={titleValue}
             placeholder="Reactの勉強"
             onChange={setTitleValue}
+            rules={[stringNotEmpty()]}
           />
           <Label>選択タグ</Label>
           {error && <p>エラーが発生しました</p>}
@@ -118,12 +120,18 @@ export const CreateTodoModalProvider: React.VFC<Props> = ({
                 />
               ))}
           </TipListContainer>
-          <Button color={colors.error[500]} onClick={close}>
-            キャンセル
-          </Button>
-          <Button type="submit" onClick={onSubmit}>
-            作成
-          </Button>
+          <ActionSectionContainer>
+            <Button color={colors.error[500]} onClick={close}>
+              キャンセル
+            </Button>
+            <Button
+              type="submit"
+              onClick={onSubmit}
+              disabled={titleValue.length === 0}
+            >
+              作成
+            </Button>
+          </ActionSectionContainer>
         </ModalContainer>
       </Modal>
     </>
@@ -170,4 +178,13 @@ const TipListContainer = styled.div`
   gap: 0.5rem 1rem;
 
   margin: 1rem 0;
+`;
+
+const ActionSectionContainer = styled.div`
+  display: flex;
+  justify-content: end;
+
+  > :not(:first-child) {
+    margin-left: 1rem;
+  }
 `;
