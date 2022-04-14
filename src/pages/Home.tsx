@@ -5,6 +5,7 @@ import { FaPlus } from 'react-icons/fa';
 import { SafeArea } from 'components/common/SafeArea';
 import { IconButton } from 'components/common/IconButton';
 import { colors } from 'utils/theme';
+import { TodoCardList } from 'components/todos/TodoCardList';
 
 export const Home: React.VFC = () => {
   return (
@@ -13,6 +14,7 @@ export const Home: React.VFC = () => {
         <FaRegCalendarAlt />
         <h1>TODO</h1>
       </IconTitle>
+      <TodoCardList />
       <FloatingActionContaner>
         <IconButton color={colors.primary[500]}>
           <FaPlus />
@@ -26,6 +28,7 @@ const IconTitle = styled.div`
   display: flex;
   align-items: center;
 
+  margin-bottom: 2rem;
   color: ${(p) => p.theme.colors.text.base};
   font-size: 1.5rem;
   font-weight: bold;
