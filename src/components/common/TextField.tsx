@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import { useValidation, ValidateRule } from 'utils/hooks/useValidation';
 
 interface Props {
   value: string;
@@ -11,6 +12,7 @@ interface Props {
   id?: string;
   autoFocus?: boolean;
   className?: string;
+  rules?: ValidateRule<string>[];
 }
 
 export const TextField: React.VFC<Props> = ({
@@ -20,12 +22,17 @@ export const TextField: React.VFC<Props> = ({
   id,
   autoFocus,
   className,
+  rules = [],
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [didBlur, setDidBlur] = useState(false);
+  const { errorMessage, validate } = useValidation(value, rules);
   useEffect(() => {
     if (autoFocus) inputRef.current?.focus();
   }, [autoFocus]);
+
+  const showErrorMessage = didBlur && errorMessage?.length !== 0;
 
   return (
     <Container className={className}>
@@ -38,12 +45,15 @@ export const TextField: React.VFC<Props> = ({
         }}
         onBlur={() => {
           setIsFocused(false);
+          setDidBlur(true);
+          validate();
         }}
         ref={inputRef}
       />
       {placeholder != null && !isFocused && !value && (
         <Placeholder>{placeholder}</Placeholder>
       )}
+      {showErrorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </Container>
   );
 };
@@ -77,4 +87,17 @@ const Placeholder = styled.span`
   pointer-events: none;
 
   color: ${(p) => p.theme.colors.text.light};
+`;
+
+const ErrorMessage = styled.p`
+  max-width: 100%;
+  background: #fff;
+
+  margin-top: 0.25rem;
+  padding-left: 0.75rem;
+  color: ${(p) => p.theme.colors.error[600]};
+  font-size: 0.75rem;
+  line-height: 1.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
