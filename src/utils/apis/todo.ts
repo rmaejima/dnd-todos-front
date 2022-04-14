@@ -41,3 +41,13 @@ export const createTodo = async (todo: TodoCreateRequest): Promise<Todo> => {
   );
   return convertTodoResponse(data);
 };
+
+export const finishTodo = async (todoId: number): Promise<Todo> => {
+  const { data } = await requestPost<TodoResponse, Pick<Todo, 'id'>>(
+    `/todos/finish`,
+    {
+      id: todoId,
+    },
+  );
+  return convertTodoResponse(data);
+};
