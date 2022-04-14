@@ -18,7 +18,7 @@ export const TodoCard: React.VFC<Props> = ({ todo }) => {
   };
 
   return (
-    <Container>
+    <Container $checked={checked}>
       <TitleSectionConrainer>
         <CheckBox
           type="checkbox"
@@ -42,12 +42,26 @@ export const TodoCard: React.VFC<Props> = ({ todo }) => {
   );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ $checked: boolean }>`
   width: 100%;
+  background-color: ${(p) =>
+    p.$checked ? p.theme.colors.primary[50] : '#fff'};
   border-radius: 6px;
   box-shadow: ${(p) => p.theme.shadows.md};
+  transition: 0.5s ${(p) => p.theme.easings.easeOut};
 
   padding: 1rem;
+
+  @keyframes fadeout {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  animation: ${(p) =>
+    p.$checked && 'fadeout 0.4s ease-in-out 0.2s 1 normal forwards;'};
 `;
 
 const TitleSectionConrainer = styled.div`
