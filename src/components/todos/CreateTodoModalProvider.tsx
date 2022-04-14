@@ -11,8 +11,16 @@ import { useAllTags } from 'utils/apis/tag';
 import { Tag } from 'types/tag';
 import { useEffect } from 'react';
 import { TagTip } from './TagTip';
+import { createTodo } from 'utils/apis/todo';
+import { TodoCreateRequest } from 'types/todo';
 
-export const CreateTodoModalProvider: React.VFC = () => {
+interface Props {
+  onCompleteCreate: () => void;
+}
+
+export const CreateTodoModalProvider: React.VFC<Props> = ({
+  onCompleteCreate,
+}) => {
   const { tags, isLoading, error, refetchAllTags } = useAllTags();
   const [Modal, open, close] = useModal('root', {
     preventScroll: true,
@@ -41,6 +49,33 @@ export const CreateTodoModalProvider: React.VFC = () => {
     setTagValue(tagValue.filter((t) => t.id !== tag.id));
   };
 
+  const resetStates = () => {
+    setTitleValue('');
+    refetchAllTags();
+    if (tags) {
+      setTagSelection(tags);
+    }
+    setTagValue([]);
+  };
+
+  const onSubmit = async () => {
+    close();
+    const payload: TodoCreateRequest = {
+      title: titleValue,
+      tags: tagValue.map((tag) => {
+        return {
+          id: tag.id,
+        };
+      }),
+    };
+    await createTodo(payload);
+
+    // モーダル内の値をリセットする
+    resetStates();
+
+    onCompleteCreate();
+  };
+
   return (
     <>
       <FloatingActionContaner>
@@ -58,6 +93,8 @@ export const CreateTodoModalProvider: React.VFC = () => {
             onChange={setTitleValue}
           />
           <Label>選択タグ</Label>
+          {error && <p>エラーが発生しました</p>}
+          {isLoading && <p>読み込み中です</p>}
           <TipListContainer>
             {tagValue &&
               tagValue.map((tag) => (
@@ -69,6 +106,8 @@ export const CreateTodoModalProvider: React.VFC = () => {
               ))}
           </TipListContainer>
           <Label>タグリスト</Label>
+          {error && <p>エラーが発生しました</p>}
+          {isLoading && <p>読み込み中です</p>}
           <TipListContainer>
             {tagSelection &&
               tagSelection.map((tag) => (
@@ -81,6 +120,9 @@ export const CreateTodoModalProvider: React.VFC = () => {
           </TipListContainer>
           <Button color={colors.error[500]} onClick={close}>
             キャンセル
+          </Button>
+          <Button type="submit" onClick={onSubmit}>
+            作成
           </Button>
         </ModalContainer>
       </Modal>
