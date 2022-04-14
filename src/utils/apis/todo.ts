@@ -1,4 +1,5 @@
-import useSWR, { mutate } from 'swr';
+import { useCallback } from 'react';
+import useSWR from 'swr';
 import { Todo } from 'types/todo';
 import { requestGet } from './axios';
 
@@ -19,10 +20,16 @@ export const getTodos = async (endpoint: string) => {
 };
 
 export const useAllTodos = () => {
-  const { data } = useSWR('/todos', getTodos);
+  const { data, error, mutate } = useSWR('/todos', getTodos);
+
+  const refetchAllTodos = useCallback(() => {
+    mutate();
+  }, [mutate]);
 
   return {
-    data,
-    mutate,
+    todos: data,
+    error,
+    isLoading: !data && !error,
+    refetchAllTodos,
   };
 };
