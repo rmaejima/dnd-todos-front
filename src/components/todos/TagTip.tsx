@@ -5,11 +5,12 @@ import { validateColorCode } from 'utils/color';
 
 interface Props {
   tag: Tag;
+  onClick?: () => void;
 }
 
-export const TagTip: React.VFC<Props> = ({ tag }) => {
+export const TagTip: React.VFC<Props> = ({ tag, onClick }) => {
   return (
-    <Container $bgColor={validateColorCode(tag.color)}>
+    <Container onClick={onClick} $bgColor={validateColorCode(tag.color)}>
       <p>{tag.title}</p>
     </Container>
   );
@@ -20,6 +21,7 @@ const Container = styled.div<{ $bgColor: string }>`
   border-radius: 0.75rem;
   padding: 0.25rem 1rem;
   color: #fff;
+  text-align: center;
 
   > p {
     font-size: 0.75rem;
