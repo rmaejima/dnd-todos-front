@@ -5,12 +5,16 @@ import { FaPlus } from 'react-icons/fa';
 import { IconButton } from 'components/common/IconButton';
 import { colors } from 'utils/theme';
 import { Button } from 'components/common/Button';
+import { TextField } from 'components/common/TextField';
+import { useState } from 'react';
 
 export const CreateTodoModalProvider: React.VFC = () => {
   const [Modal, open, close] = useModal('root', {
     preventScroll: true,
     closeOnOverlayClick: false,
   });
+
+  const [titleValue, setTitleValue] = useState<string>('');
 
   return (
     <>
@@ -22,6 +26,12 @@ export const CreateTodoModalProvider: React.VFC = () => {
       <Modal>
         <ModalContainer>
           <ModalTitle>新しいTODO</ModalTitle>
+          <Label>タイトル</Label>
+          <StyledTextField
+            value={titleValue}
+            placeholder="Reactの勉強"
+            onChange={setTitleValue}
+          />
           <Button color={colors.error[500]} onClick={close}>
             キャンセル
           </Button>
@@ -50,4 +60,17 @@ const ModalTitle = styled.h1`
   color: ${(p) => p.theme.colors.text.base};
   font-size: 1.5rem;
   font-weight: bold;
+`;
+
+const Label = styled.label`
+  display: block;
+  margin-bottom: 0.25rem;
+
+  color: ${(p) => p.theme.colors.text.base};
+  font-size: 0.75rem;
+  font-weight: bold;
+`;
+
+const StyledTextField = styled(TextField)`
+  margin-bottom: 1rem;
 `;
