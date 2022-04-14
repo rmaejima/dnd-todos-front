@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useAllTodos } from 'utils/apis/todo';
 import { TodoCard } from './TodoCard';
 import { CreateTodoModalProvider } from './CreateTodoModalProvider';
@@ -12,16 +13,42 @@ export const TodoList: React.VFC = () => {
       {error && 'エラーが発生しました'}
       {isLoading && '読み込み中です'}
 
-      <CardListContainer>
-        {todos &&
-          todos.map((todo) => (
-            <TodoCard
-              key={todo.id}
-              todo={todo}
-              omCompleteFinish={refetchAllTodos}
-            />
-          ))}
-      </CardListContainer>
+      <DragDropContext onDragEnd={(result) => console.log(result)}>
+        {todos && (
+          <Droppable key="droppable" droppableId="droppable">
+            {(provided) => (
+              <CardListContainer
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="droppableArea"
+              >
+                {todos.map((todo, index) => (
+                  <Draggable
+                    index={index}
+                    key={todo.id}
+                    draggableId={todo.id.toString()}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.dragHandleProps}
+                        {...provided.draggableProps}
+                      >
+                        <TodoCard
+                          todo={todo}
+                          omCompleteFinish={refetchAllTodos}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </CardListContainer>
+            )}
+          </Droppable>
+        )}
+      </DragDropContext>
+
       <CreateTodoModalProvider onCompleteCreate={refetchAllTodos} />
     </>
   );
