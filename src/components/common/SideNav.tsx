@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ImCalendar } from 'react-icons/im';
-import { ImPriceTag } from 'react-icons/im';
-import { ImCheckboxChecked } from 'react-icons/im';
-import { ImBin2 } from 'react-icons/im';
+import { FaRegCalendarAlt } from 'react-icons/fa';
+import { FaTag } from 'react-icons/fa';
+import { FaRegCalendarCheck } from 'react-icons/fa';
+import { FaRegTrashAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 export const SIDENAV_WIDTH = '30rem';
@@ -16,7 +16,7 @@ export const SideNav: React.VFC = () => {
         <li>
           <StyledLink to="/">
             <LinkBar>
-              <ImCalendar />
+              <FaRegCalendarAlt />
               <p>TODO</p>
             </LinkBar>
           </StyledLink>
@@ -24,7 +24,7 @@ export const SideNav: React.VFC = () => {
         <li>
           <StyledLink to="/tags">
             <LinkBar>
-              <ImPriceTag />
+              <FaTag />
               <p>タグ</p>
             </LinkBar>
           </StyledLink>
@@ -32,7 +32,7 @@ export const SideNav: React.VFC = () => {
         <li>
           <StyledLink to="/history">
             <LinkBar>
-              <ImCheckboxChecked />
+              <FaRegCalendarCheck />
               <p>履歴</p>
             </LinkBar>
           </StyledLink>
@@ -40,7 +40,7 @@ export const SideNav: React.VFC = () => {
         <li>
           <StyledLink to="/archived">
             <LinkBar>
-              <ImBin2 />
+              <FaRegTrashAlt />
               <p>ゴミ箱</p>
             </LinkBar>
           </StyledLink>
