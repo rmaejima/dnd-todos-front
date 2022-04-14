@@ -33,6 +33,7 @@ const Button = styled.button<{ $bgColor: string }>`
   transition: 0.1s ${(p) => p.theme.easings.easeOut};
 
   &:hover {
+    opacity: 0.8;
     box-shadow: ${(p) => p.theme.shadows.lg};
   }
 `;
