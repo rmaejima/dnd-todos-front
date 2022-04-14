@@ -29,7 +29,7 @@ export const TodoList: React.VFC = () => {
                     draggableId={todo.id.toString()}
                   >
                     {(provided) => (
-                      <div
+                      <li
                         ref={provided.innerRef}
                         {...provided.dragHandleProps}
                         {...provided.draggableProps}
@@ -38,7 +38,7 @@ export const TodoList: React.VFC = () => {
                           todo={todo}
                           omCompleteFinish={refetchAllTodos}
                         />
-                      </div>
+                      </li>
                     )}
                   </Draggable>
                 ))}
@@ -54,8 +54,9 @@ export const TodoList: React.VFC = () => {
   );
 };
 
-const CardListContainer = styled.div`
-  > div:not(:first-child) {
+const CardListContainer = styled.ul`
+  list-style: none;
+  > li:not(:first-child) {
     margin-top: 0.5rem;
   }
 `;
