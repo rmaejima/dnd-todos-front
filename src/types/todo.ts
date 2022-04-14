@@ -9,3 +9,7 @@ export interface Todo {
   updatedAt: Date;
   tags: Tag[];
 }
+
+export type TodoCreateRequest = Pick<Todo, 'title'> & {
+  tags: Pick<Tag, 'id'>[];
+};

@@ -4,15 +4,45 @@ import { FaRegClock } from 'react-icons/fa';
 import { Todo } from 'types/todo';
 import { formatDateToString } from 'utils/date';
 import { TagTip } from './TagTip';
+import { useState } from 'react';
+import { useDebounce } from 'react-use';
+import { finishTodo } from 'utils/apis/todo';
+
+const DEBOUNSE_TIME = 600; // ms
 
 interface Props {
   todo: Todo;
+  omCompleteFinish: () => void;
 }
 
-export const TodoCard: React.VFC<Props> = ({ todo }) => {
+export const TodoCard: React.VFC<Props> = ({ todo, omCompleteFinish }) => {
+  const [checked, setChecked] = useState(false);
+
+  useDebounce(
+    async () => {
+      if (checked === true) {
+        await finishTodo(todo.id);
+        omCompleteFinish();
+      }
+    },
+    DEBOUNSE_TIME,
+    [checked],
+  );
+
+  const toggleCheck = () => {
+    setChecked(!checked);
+  };
+
   return (
-    <Container>
-      <Title>{todo.title}</Title>
+    <Container $checked={checked}>
+      <TitleSectionConrainer>
+        <CheckBox
+          type="checkbox"
+          checked={checked}
+          onChange={toggleCheck}
+        ></CheckBox>
+        <Title>{todo.title}</Title>
+      </TitleSectionConrainer>
       <BottomSectionContainer>
         <TagSection>
           {todo.tags.map((tag) => (
@@ -28,16 +58,45 @@ export const TodoCard: React.VFC<Props> = ({ todo }) => {
   );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ $checked: boolean }>`
   width: 100%;
+  background-color: ${(p) =>
+    p.$checked ? p.theme.colors.primary[50] : '#fff'};
   border-radius: 6px;
   box-shadow: ${(p) => p.theme.shadows.md};
+  transition: 0.5s ${(p) => p.theme.easings.easeOut};
 
   padding: 1rem;
+
+  @keyframes fadeout {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  /* 0.2s - 0.6s */
+  animation: ${(p) =>
+    p.$checked && 'fadeout 0.4s ease-in-out 0.2s 1 normal forwards;'};
+`;
+
+const TitleSectionConrainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+
+  > :not(:first-child) {
+    margin-left: 0.5rem;
+  }
+`;
+
+const CheckBox = styled.input`
+  width: 1rem;
+  height: 1rem;
 `;
 
 const Title = styled.h1`
-  margin-bottom: 0.75rem;
   font-size: 1rem;
   font-weight: bold;
   color: ${(p) => p.theme.colors.text.base};

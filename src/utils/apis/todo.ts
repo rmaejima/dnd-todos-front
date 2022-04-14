@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import useSWR from 'swr';
-import { Todo } from 'types/todo';
-import { requestGet } from './axios';
+import { Todo, TodoCreateRequest } from 'types/todo';
+import { requestGet, requestPost } from './axios';
 
 type TodoResponse = Omit<Todo, 'createdAt' | 'updatedAt'> & {
   createdAt: string;
@@ -32,4 +32,22 @@ export const useAllTodos = () => {
     isLoading: !data && !error,
     refetchAllTodos,
   };
+};
+
+export const createTodo = async (todo: TodoCreateRequest): Promise<Todo> => {
+  const { data } = await requestPost<TodoResponse, TodoCreateRequest>(
+    '/todos',
+    todo,
+  );
+  return convertTodoResponse(data);
+};
+
+export const finishTodo = async (todoId: number): Promise<Todo> => {
+  const { data } = await requestPost<TodoResponse, Pick<Todo, 'id'>>(
+    `/todos/finish`,
+    {
+      id: todoId,
+    },
+  );
+  return convertTodoResponse(data);
 };
