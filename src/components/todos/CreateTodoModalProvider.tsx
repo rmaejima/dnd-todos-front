@@ -19,8 +19,10 @@ export const CreateTodoModalProvider: React.VFC = () => {
         </IconButton>
       </FloatingActionContaner>
       <Modal>
-        <p>モーダル</p>
-        <button onClick={close}>CLOSE</button>
+        <ModalContainer>
+          <ModalTitle>新しいTODO</ModalTitle>
+          <button onClick={close}>CLOSE</button>
+        </ModalContainer>
       </Modal>
     </>
   );
@@ -30,4 +32,19 @@ const FloatingActionContaner = styled.div`
   position: fixed;
   bottom: 3rem;
   right: 4rem;
+`;
+
+const ModalContainer = styled.div`
+  width: 35rem;
+  background-color: #fff;
+  border-radius: 1rem;
+
+  padding: 1.5rem;
+`;
+
+const ModalTitle = styled.h1`
+  margin-bottom: 1rem;
+  color: ${(p) => p.theme.colors.text.base};
+  font-size: 1.5rem;
+  font-weight: bold;
 `;
