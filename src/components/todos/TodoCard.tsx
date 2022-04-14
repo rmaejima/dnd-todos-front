@@ -60,6 +60,7 @@ const Container = styled.div<{ $checked: boolean }>`
       opacity: 0;
     }
   }
+  /* 0.2s - 0.6s */
   animation: ${(p) =>
     p.$checked && 'fadeout 0.4s ease-in-out 0.2s 1 normal forwards;'};
 `;
