@@ -6,7 +6,7 @@ import { FaRegCalendarCheck } from 'react-icons/fa';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-export const SIDENAV_WIDTH = '30rem';
+export const SIDENAV_WIDTH = '25rem';
 
 export const SideNav: React.VFC = () => {
   return (
