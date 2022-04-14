@@ -1,20 +1,46 @@
 import React from 'react';
 import styled from 'styled-components';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from 'react-beautiful-dnd';
 import { useAllTodos } from 'utils/apis/todo';
 import { TodoCard } from './TodoCard';
 import { CreateTodoModalProvider } from './CreateTodoModalProvider';
+import { useState } from 'react';
+import { Todo } from 'types/todo';
+import { useEffect } from 'react';
 
 export const TodoList: React.VFC = () => {
   const { todos, isLoading, error, refetchAllTodos } = useAllTodos();
+  const [draggableItems, setDraggableItems] = useState<Todo[]>();
+
+  useEffect(() => {
+    if (todos) {
+      setDraggableItems(todos);
+    }
+  }, [todos]);
+
+  const handleOnDragEnd = (result: DropResult) => {
+    if (!(draggableItems && result.destination)) {
+      return;
+    }
+    // 入れ替わった順番に更新する
+    const items = Array.from(draggableItems);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setDraggableItems(items);
+  };
 
   return (
     <>
       {error && 'エラーが発生しました'}
       {isLoading && '読み込み中です'}
 
-      <DragDropContext onDragEnd={(result) => console.log(result)}>
-        {todos && (
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        {draggableItems && (
           <Droppable key="droppable" droppableId="droppable">
             {(provided) => (
               <CardListContainer
@@ -22,7 +48,7 @@ export const TodoList: React.VFC = () => {
                 {...provided.droppableProps}
                 className="droppableArea"
               >
-                {todos.map((todo, index) => (
+                {draggableItems.map((todo, index) => (
                   <Draggable
                     index={index}
                     key={todo.id}
