@@ -18,6 +18,7 @@ export const TodoList: React.VFC = () => {
   const [draggableItems, setDraggableItems] = useState<Todo[]>();
 
   useEffect(() => {
+    // TODO: Refetchした後にも順番がもとに戻らないようにしたい
     if (todos) {
       setDraggableItems(todos);
     }
