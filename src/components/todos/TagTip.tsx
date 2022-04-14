@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Tag } from 'types/tag';
+import { validateColorCode } from 'utils/color';
 
 interface Props {
   tag: Tag;
@@ -8,7 +9,7 @@ interface Props {
 
 export const TagTip: React.VFC<Props> = ({ tag }) => {
   return (
-    <Container $bgColor={tag.color}>
+    <Container $bgColor={validateColorCode(tag.color)}>
       <p>{tag.title}</p>
     </Container>
   );
