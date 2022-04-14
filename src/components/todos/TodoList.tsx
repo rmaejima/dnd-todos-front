@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { useAllTodos } from 'utils/apis/todo';
 import { TodoCard } from './TodoCard';
+import { CreateTodoModalProvider } from './CreateTodoModalProvider';
 
-export const TodoCardList: React.VFC = () => {
+export const TodoList: React.VFC = () => {
   const { todos, isLoading, error, refetchAllTodos } = useAllTodos();
+
   return (
     <>
       {error && 'エラーが発生しました'}
@@ -12,14 +14,15 @@ export const TodoCardList: React.VFC = () => {
       {/* TODO: ローディング実装 */}
       {isLoading && 'ローディング'}
 
-      <Container>
+      <CardListContainer>
         {todos && todos.map((todo) => <TodoCard key={todo.id} todo={todo} />)}
-      </Container>
+      </CardListContainer>
+      <CreateTodoModalProvider />
     </>
   );
 };
 
-const Container = styled.div`
+const CardListContainer = styled.div`
   > div:not(:first-child) {
     margin-top: 0.5rem;
   }
