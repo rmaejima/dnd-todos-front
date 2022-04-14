@@ -10,14 +10,12 @@ export const TodoList: React.VFC = () => {
   return (
     <>
       {error && 'エラーが発生しました'}
-
-      {/* TODO: ローディング実装 */}
-      {isLoading && 'ローディング'}
+      {isLoading && '読み込み中です'}
 
       <CardListContainer>
         {todos && todos.map((todo) => <TodoCard key={todo.id} todo={todo} />)}
       </CardListContainer>
-      <CreateTodoModalProvider />
+      <CreateTodoModalProvider onCompleteCreate={refetchAllTodos} />
     </>
   );
 };
