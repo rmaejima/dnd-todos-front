@@ -8,7 +8,7 @@ import {
 } from 'react-beautiful-dnd';
 import { useAllTodos } from 'utils/apis/todo';
 import { TodoCard } from './TodoCard';
-import { CreateTodoModalProvider } from './CreateTodoModalProvider';
+import { CreateTodoFloatingActionButton } from './CreateTodoFloatingActionButton';
 import { useState } from 'react';
 import { Todo } from 'types/todo';
 import { useEffect } from 'react';
@@ -78,7 +78,7 @@ export const TodoList: React.VFC = () => {
         )}
       </DragDropContext>
 
-      <CreateTodoModalProvider onCompleteCreate={refetchAllTodos} />
+      <CreateTodoFloatingActionButton onCompleteCreate={refetchAllTodos} />
     </>
   );
 };

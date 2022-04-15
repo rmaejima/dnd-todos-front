@@ -19,7 +19,7 @@ interface Props {
   onCompleteCreate: () => void;
 }
 
-export const CreateTodoModalProvider: React.VFC<Props> = ({
+export const CreateTodoFloatingActionButton: React.VFC<Props> = ({
   onCompleteCreate,
 }) => {
   const { tags, isLoading, error, refetchAllTags } = useAllTags();
