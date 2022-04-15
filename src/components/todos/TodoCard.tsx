@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import { FaTrashAlt } from 'react-icons/fa';
 import { FaRegClock } from 'react-icons/fa';
 import { Todo } from 'types/todo';
@@ -53,7 +54,7 @@ export const TodoCard: React.VFC<Props> = ({
           )}
           <Title>{todo.title}</Title>
         </TitleSectionConrainer>
-        <IconButton size={48}>
+        <IconButton size={48} onClick={() => toast.info('アーカイブしました')}>
           <FaTrashAlt />
         </IconButton>
       </TopSectionContainer>
