@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tag } from 'types/tag';
+import { TagSummary } from 'types/tag';
 import { validateColorCode } from 'utils/color';
 
 interface Props {
-  tag: Tag;
+  tag: TagSummary;
   onClick?: () => void;
 }
 
