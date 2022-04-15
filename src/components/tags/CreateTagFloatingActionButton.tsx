@@ -10,6 +10,8 @@ import { Button } from 'components/common/Button';
 import { TextField } from 'components/common/TextField';
 import { useState } from 'react';
 import { stringNotEmpty } from 'utils/hooks/useValidation';
+import { createTag } from 'utils/apis/tag';
+import { TagCreateRequest } from 'types/tag';
 
 interface Props {
   onCompleteCreate: () => void;
@@ -32,7 +34,11 @@ export const CreateTagFloatingActionButton: React.VFC<Props> = ({
 
   const onSubmit = async () => {
     close();
-    // TODO: タグ作成
+    const payload: TagCreateRequest = {
+      title: titleValue,
+      color: color.hex,
+    };
+    await createTag(payload);
 
     // モーダル内の値をリセットする
     resetStates();
