@@ -1,4 +1,4 @@
-import { Tag } from './tag';
+import { Tag, TagSummary } from './tag';
 
 export interface Todo {
   id: number;
@@ -7,7 +7,7 @@ export interface Todo {
   archived: boolean;
   createdAt: Date;
   updatedAt: Date;
-  tags: Tag[];
+  tags: TagSummary[];
 }
 
 export type TodoCreateRequest = Pick<Todo, 'title'> & {
