@@ -13,7 +13,7 @@ const DEBOUNSE_TIME = 600; // ms
 interface Props {
   todo: Todo;
   disabled?: boolean;
-  omCompleteFinish: () => void;
+  omCompleteFinish?: () => void;
 }
 
 export const TodoCard: React.VFC<Props> = ({
@@ -25,7 +25,7 @@ export const TodoCard: React.VFC<Props> = ({
 
   useDebounce(
     async () => {
-      if (checked === true) {
+      if (omCompleteFinish && checked === true) {
         await finishTodo(todo.id);
         omCompleteFinish();
       }
