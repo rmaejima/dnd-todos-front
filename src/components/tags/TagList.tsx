@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useAllTags } from 'utils/apis/tag';
+import { CreateTagFloatingActionButton } from './CreateTagFloatingActionButton';
 import { TagCard } from './TagCard';
 
 export const TagList: React.VFC = () => {
@@ -17,6 +18,8 @@ export const TagList: React.VFC = () => {
           ))}
         </Container>
       )}
+
+      <CreateTagFloatingActionButton onCompleteCreate={refetchAllTags} />
     </>
   );
 };
