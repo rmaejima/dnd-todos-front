@@ -1,17 +1,17 @@
 import React from 'react';
-import { FaRegCalendarAlt } from 'react-icons/fa';
+import { FaTag } from 'react-icons/fa';
 import { SafeArea } from 'components/common/SafeArea';
-import { TodoList } from 'components/todos/TodoList';
 import { PageTitle } from 'components/common/PageTitle';
+import { TagList } from 'components/tags/TagList';
 
-export const Home: React.VFC = () => {
+export const Tags: React.VFC = () => {
   return (
     <SafeArea>
       <PageTitle>
-        <FaRegCalendarAlt />
-        <h1>TODO</h1>
+        <FaTag />
+        <h1>タグ</h1>
       </PageTitle>
-      <TodoList />
+      <TagList />
     </SafeArea>
   );
 };

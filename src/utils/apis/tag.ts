@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import useSWR from 'swr';
-import { Tag } from 'types/tag';
-import { requestGet } from './axios';
+import { Tag, TagCreateRequest, TagSummary } from 'types/tag';
+import { requestGet, requestPost } from './axios';
 
 export const getTags = async (endpoint: string) => {
   const { data } = await requestGet<Tag[]>(endpoint);
@@ -21,4 +21,12 @@ export const useAllTags = () => {
     isLoading: !data && !error,
     refetchAllTags,
   };
+};
+
+export const createTag = async (tag: TagCreateRequest): Promise<TagSummary> => {
+  const { data } = await requestPost<TagSummary, TagCreateRequest>(
+    '/tags',
+    tag,
+  );
+  return data;
 };

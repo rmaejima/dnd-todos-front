@@ -108,9 +108,9 @@ const CheckBox = styled.input`
 `;
 
 const Title = styled.h1`
+  color: ${(p) => p.theme.colors.text.base};
   font-size: 1rem;
   font-weight: bold;
-  color: ${(p) => p.theme.colors.text.base};
 `;
 
 const BottomSectionContainer = styled.div`

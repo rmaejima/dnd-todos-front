@@ -4,6 +4,7 @@ import { Home } from 'pages/Home';
 import { NotFound } from 'pages/NotFound';
 import { Finished } from 'pages/Finished';
 import { Archived } from 'pages/Archived';
+import { Tags } from 'pages/Tags';
 
 export const Router: React.VFC = () => {
   return (
@@ -12,6 +13,7 @@ export const Router: React.VFC = () => {
         <Route index element={<Home />} />
         <Route path="/finished" element={<Finished />} />
         <Route path="/archived" element={<Archived />} />
+        <Route path="/tags" element={<Tags />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

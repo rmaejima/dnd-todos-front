@@ -1,4 +1,6 @@
 import React from 'react';
+import { ColorPicker, useColor } from 'react-color-palette';
+import 'react-color-palette/lib/css/styles.css';
 import { useModal } from 'react-hooks-use-modal';
 import styled from 'styled-components';
 import { FaPlus } from 'react-icons/fa';
@@ -7,73 +9,39 @@ import { colors } from 'utils/theme';
 import { Button } from 'components/common/Button';
 import { TextField } from 'components/common/TextField';
 import { useState } from 'react';
-import { useAllTags } from 'utils/apis/tag';
-import { Tag } from 'types/tag';
-import { useEffect } from 'react';
-import { TagTip } from '../tags/TagTip';
-import { createTodo } from 'utils/apis/todo';
-import { TodoCreateRequest } from 'types/todo';
 import { stringNotEmpty } from 'utils/hooks/useValidation';
+import { createTag } from 'utils/apis/tag';
+import { TagCreateRequest } from 'types/tag';
 
 interface Props {
   onCompleteCreate: () => void;
 }
 
-export const CreateTodoModalProvider: React.VFC<Props> = ({
+export const CreateTagFloatingActionButton: React.VFC<Props> = ({
   onCompleteCreate,
 }) => {
-  const { tags, isLoading, error, refetchAllTags } = useAllTags();
   const [Modal, open, close] = useModal('root', {
     preventScroll: true,
     closeOnOverlayClick: false,
   });
+  const [color, setColor] = useColor('hex', colors.primary[500]);
 
   const [titleValue, setTitleValue] = useState<string>('');
-  const [tagSelection, setTagSelection] = useState<Tag[]>([]);
-  const [tagValue, setTagValue] = useState<Tag[]>([]);
-
-  useEffect(() => {
-    if (tags) {
-      setTagSelection(tags);
-    }
-  }, [tags]);
-
-  const onClickTagSelectionTip = (tag: Tag) => {
-    setTagValue([...tagValue, tag]);
-    setTagSelection(
-      tagSelection.filter((selection) => selection.id !== tag.id),
-    );
-  };
-
-  const onClickTagValueTip = (tag: Tag) => {
-    setTagSelection([tag, ...tagSelection]);
-    setTagValue(tagValue.filter((t) => t.id !== tag.id));
-  };
 
   const resetStates = () => {
     setTitleValue('');
-    refetchAllTags();
-    if (tags) {
-      setTagSelection(tags);
-    }
-    setTagValue([]);
   };
 
   const onSubmit = async () => {
     close();
-    const payload: TodoCreateRequest = {
+    const payload: TagCreateRequest = {
       title: titleValue,
-      tags: tagValue.map((tag) => {
-        return {
-          id: tag.id,
-        };
-      }),
+      color: color.hex,
     };
-    await createTodo(payload);
+    await createTag(payload);
 
     // モーダル内の値をリセットする
     resetStates();
-
     onCompleteCreate();
   };
 
@@ -84,42 +52,37 @@ export const CreateTodoModalProvider: React.VFC<Props> = ({
           <FaPlus />
         </IconButton>
       </FloatingActionContaner>
+
       <Modal>
         <ModalContainer>
-          <ModalTitle>新しいTODO</ModalTitle>
+          <ModalTitle>新しいタグ</ModalTitle>
           <Label>タイトル</Label>
           <StyledTextField
             value={titleValue}
-            placeholder="Reactの勉強"
+            placeholder="タスク"
             onChange={setTitleValue}
             rules={[stringNotEmpty()]}
           />
-          <Label>選択タグ</Label>
-          {error && <p>エラーが発生しました</p>}
-          {isLoading && <p>読み込み中です</p>}
-          <TipListContainer>
-            {tagValue &&
-              tagValue.map((tag) => (
-                <TagTip
-                  key={tag.id}
-                  tag={tag}
-                  onClick={() => onClickTagValueTip(tag)}
-                />
-              ))}
-          </TipListContainer>
-          <Label>タグリスト</Label>
-          {error && <p>エラーが発生しました</p>}
-          {isLoading && <p>読み込み中です</p>}
-          <TipListContainer>
-            {tagSelection &&
-              tagSelection.map((tag) => (
-                <TagTip
-                  key={tag.id}
-                  tag={tag}
-                  onClick={() => onClickTagSelectionTip(tag)}
-                />
-              ))}
-          </TipListContainer>
+          <Label>カラー</Label>
+          <PaletteContainer>
+            <ColorPicker
+              width={456}
+              height={228}
+              color={color}
+              onChange={setColor}
+              hideHSV
+              dark
+            />
+          </PaletteContainer>
+          <Label>プレビュー</Label>
+          {titleValue.length !== 0 ? (
+            <Preview $bgColor={color.hex}>{titleValue}</Preview>
+          ) : (
+            <Label style={{ fontWeight: 'normal' }}>
+              タイトルを入力してください
+            </Label>
+          )}
+
           <ActionSectionContainer>
             <Button color={colors.error[500]} onClick={close}>
               キャンセル
@@ -172,12 +135,21 @@ const StyledTextField = styled(TextField)`
   margin-bottom: 1rem;
 `;
 
-const TipListContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem 1rem;
+const PaletteContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+`;
 
-  margin: 1rem 0;
+const Preview = styled.div<{ $bgColor: string }>`
+  display: inline-block;
+  background-color: ${(p) => p.$bgColor};
+  border-radius: 0.75rem;
+
+  padding: 0.25rem 1rem;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
 `;
 
 const ActionSectionContainer = styled.div`
