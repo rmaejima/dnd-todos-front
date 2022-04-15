@@ -5,6 +5,6 @@ export const validateColorCode = (colorCode: string): string => {
   if (/^#[0-9A-Fa-f]{6}$/.test(colorCode)) {
     return colorCode;
   } else {
-    return colors.gray[500];
+    return colors.gray[400];
   }
 };
