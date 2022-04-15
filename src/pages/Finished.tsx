@@ -10,8 +10,8 @@ export const Finished: React.VFC = () => {
       <IconTitle>
         <FaRegCalendarAlt />
         <h1>履歴</h1>
-        <FinishedTodoList />
       </IconTitle>
+      <FinishedTodoList />
     </SafeArea>
   );
 };
