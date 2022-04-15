@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FaTrashAlt } from 'react-icons/fa';
 import { FaRegClock } from 'react-icons/fa';
 import { Todo } from 'types/todo';
 import { formatDateToString } from 'utils/date';
@@ -7,6 +8,7 @@ import { TagTip } from '../tags/TagTip';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
 import { finishTodo } from 'utils/apis/todo';
+import { IconButton } from 'components/common/IconButton';
 
 const DEBOUNSE_TIME = 600; // ms
 
@@ -40,16 +42,21 @@ export const TodoCard: React.VFC<Props> = ({
 
   return (
     <Container $checked={checked} $disabled={disabled}>
-      <TitleSectionConrainer>
-        {!disabled && (
-          <CheckBox
-            type="checkbox"
-            checked={checked}
-            onChange={toggleCheck}
-          ></CheckBox>
-        )}
-        <Title>{todo.title}</Title>
-      </TitleSectionConrainer>
+      <TopSectionContainer>
+        <TitleSectionConrainer>
+          {!disabled && (
+            <CheckBox
+              type="checkbox"
+              checked={checked}
+              onChange={toggleCheck}
+            ></CheckBox>
+          )}
+          <Title>{todo.title}</Title>
+        </TitleSectionConrainer>
+        <IconButton size={48}>
+          <FaTrashAlt />
+        </IconButton>
+      </TopSectionContainer>
       <BottomSectionContainer>
         <TagSection>
           {todo.tags.map((tag) => (
@@ -92,10 +99,16 @@ const Container = styled.div<{ $checked: boolean; $disabled?: boolean }>`
     p.$checked && 'fadeout 0.4s ease-in-out 0.2s 1 normal forwards;'};
 `;
 
+const TopSectionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+`;
+
 const TitleSectionConrainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 0.75rem;
 
   > :not(:first-child) {
     margin-left: 0.5rem;
