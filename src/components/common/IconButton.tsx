@@ -31,12 +31,11 @@ const Button = styled.button<{ $size?: number; $bgColor?: string }>`
   border-radius: 50%;
 
   color: ${(p) =>
-    p.$bgColor === (undefined || '#fff') ? p.theme.colors.text.base : '#fff'};
-  font-size: 1.5rem;
+    p.$bgColor === undefined ? p.theme.colors.text.light : '#fff'};
+  font-size: ${(p) => (p.$size ? `${p.$size / 2.5}px` : '1.5rem')};
   transition: 0.1s ${(p) => p.theme.easings.easeOut};
 
   &:hover {
     opacity: 0.8;
-    box-shadow: ${(p) => p.theme.shadows.lg};
   }
 `;
