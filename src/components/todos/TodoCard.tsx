@@ -12,10 +12,15 @@ const DEBOUNSE_TIME = 600; // ms
 
 interface Props {
   todo: Todo;
+  disabled?: boolean;
   omCompleteFinish: () => void;
 }
 
-export const TodoCard: React.VFC<Props> = ({ todo, omCompleteFinish }) => {
+export const TodoCard: React.VFC<Props> = ({
+  todo,
+  disabled,
+  omCompleteFinish,
+}) => {
   const [checked, setChecked] = useState(false);
 
   useDebounce(
@@ -34,13 +39,15 @@ export const TodoCard: React.VFC<Props> = ({ todo, omCompleteFinish }) => {
   };
 
   return (
-    <Container $checked={checked}>
+    <Container $checked={checked} $disabled={disabled}>
       <TitleSectionConrainer>
-        <CheckBox
-          type="checkbox"
-          checked={checked}
-          onChange={toggleCheck}
-        ></CheckBox>
+        {!disabled && (
+          <CheckBox
+            type="checkbox"
+            checked={checked}
+            onChange={toggleCheck}
+          ></CheckBox>
+        )}
         <Title>{todo.title}</Title>
       </TitleSectionConrainer>
       <BottomSectionContainer>
@@ -58,10 +65,14 @@ export const TodoCard: React.VFC<Props> = ({ todo, omCompleteFinish }) => {
   );
 };
 
-const Container = styled.div<{ $checked: boolean }>`
+const Container = styled.div<{ $checked: boolean; $disabled?: boolean }>`
   width: 100%;
   background-color: ${(p) =>
-    p.$checked ? p.theme.colors.primary[50] : '#fff'};
+    p.$disabled
+      ? p.theme.colors.gray[100]
+      : p.$checked
+      ? p.theme.colors.primary[50]
+      : '#fff'};
   border-radius: 6px;
   box-shadow: ${(p) => p.theme.shadows.md};
   transition: 0.5s ${(p) => p.theme.easings.easeOut};
