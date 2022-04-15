@@ -4,15 +4,17 @@ import styled from 'styled-components';
 interface Props {
   onClick?: () => void;
   className?: string;
+  size?: number; //px
   color: string;
   children: React.ReactNode;
 }
 export const IconButton = React.forwardRef<HTMLButtonElement, Props>(
-  function IconButton({ onClick, className, children, color }, ref) {
+  function IconButton({ onClick, className, children, size, color }, ref) {
     return (
       <Button
         className={className}
         onClick={onClick}
+        $size={size}
         $bgColor={color}
         ref={ref}
       >
@@ -22,9 +24,9 @@ export const IconButton = React.forwardRef<HTMLButtonElement, Props>(
   },
 );
 
-const Button = styled.button<{ $bgColor: string }>`
-  width: 4rem;
-  height: 4rem;
+const Button = styled.button<{ $size?: number; $bgColor: string }>`
+  width: ${(p) => (p.$size ? `${p.$size}px` : '4rem')};
+  height: ${(p) => (p.$size ? `${p.$size}px` : '4rem')};
   background-color: ${(p) => p.$bgColor};
   border-radius: 50%;
 
