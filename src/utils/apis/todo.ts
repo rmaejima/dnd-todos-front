@@ -1,7 +1,13 @@
+import { AxiosRequestConfig } from 'axios';
 import { useCallback } from 'react';
 import useSWR from 'swr';
 import { Todo, TodoCreateRequest } from 'types/todo';
 import { requestGet, requestPost } from './axios';
+
+interface TodoGetOptions {
+  finished?: boolean;
+  archived?: boolean;
+}
 
 type TodoResponse = Omit<Todo, 'createdAt' | 'updatedAt'> & {
   createdAt: string;
@@ -14,13 +20,26 @@ const convertTodoResponse = (data: TodoResponse): Todo => ({
   updatedAt: new Date(data.updatedAt),
 });
 
-export const getTodos = async (endpoint: string) => {
-  const { data } = await requestGet<TodoResponse[]>(endpoint);
+export const getTodos = async (
+  endpoint: string,
+  options: AxiosRequestConfig<TodoGetOptions>,
+) => {
+  const { data } = await requestGet<TodoResponse[]>(endpoint, options);
   return data.map(convertTodoResponse);
 };
 
-export const useAllTodos = () => {
-  const { data, error, mutate } = useSWR('/todos', getTodos);
+export const useAllTodos = (options?: TodoGetOptions) => {
+  const { data, error, mutate } = useSWR(
+    [
+      '/todos',
+      {
+        params: {
+          ...options,
+        },
+      },
+    ],
+    getTodos,
+  );
 
   const refetchAllTodos = useCallback(() => {
     mutate();

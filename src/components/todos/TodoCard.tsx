@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaRegClock } from 'react-icons/fa';
 import { Todo } from 'types/todo';
 import { formatDateToString } from 'utils/date';
-import { TagTip } from './TagTip';
+import { TagTip } from '../tags/TagTip';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
 import { finishTodo } from 'utils/apis/todo';
@@ -12,15 +12,20 @@ const DEBOUNSE_TIME = 600; // ms
 
 interface Props {
   todo: Todo;
-  omCompleteFinish: () => void;
+  disabled?: boolean;
+  omCompleteFinish?: () => void;
 }
 
-export const TodoCard: React.VFC<Props> = ({ todo, omCompleteFinish }) => {
+export const TodoCard: React.VFC<Props> = ({
+  todo,
+  disabled,
+  omCompleteFinish,
+}) => {
   const [checked, setChecked] = useState(false);
 
   useDebounce(
     async () => {
-      if (checked === true) {
+      if (omCompleteFinish && checked === true) {
         await finishTodo(todo.id);
         omCompleteFinish();
       }
@@ -34,13 +39,15 @@ export const TodoCard: React.VFC<Props> = ({ todo, omCompleteFinish }) => {
   };
 
   return (
-    <Container $checked={checked}>
+    <Container $checked={checked} $disabled={disabled}>
       <TitleSectionConrainer>
-        <CheckBox
-          type="checkbox"
-          checked={checked}
-          onChange={toggleCheck}
-        ></CheckBox>
+        {!disabled && (
+          <CheckBox
+            type="checkbox"
+            checked={checked}
+            onChange={toggleCheck}
+          ></CheckBox>
+        )}
         <Title>{todo.title}</Title>
       </TitleSectionConrainer>
       <BottomSectionContainer>
@@ -58,10 +65,14 @@ export const TodoCard: React.VFC<Props> = ({ todo, omCompleteFinish }) => {
   );
 };
 
-const Container = styled.div<{ $checked: boolean }>`
+const Container = styled.div<{ $checked: boolean; $disabled?: boolean }>`
   width: 100%;
   background-color: ${(p) =>
-    p.$checked ? p.theme.colors.primary[50] : '#fff'};
+    p.$disabled
+      ? p.theme.colors.gray[100]
+      : p.$checked
+      ? p.theme.colors.primary[50]
+      : '#fff'};
   border-radius: 6px;
   box-shadow: ${(p) => p.theme.shadows.md};
   transition: 0.5s ${(p) => p.theme.easings.easeOut};

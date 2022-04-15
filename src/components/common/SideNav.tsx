@@ -30,7 +30,7 @@ export const SideNav: React.VFC = () => {
           </StyledLink>
         </li>
         <li>
-          <StyledLink to="/history">
+          <StyledLink to="/finished">
             <LinkBar>
               <FaRegCalendarCheck />
               <p>履歴</p>

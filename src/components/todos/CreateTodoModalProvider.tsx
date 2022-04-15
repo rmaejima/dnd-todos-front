@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { useAllTags } from 'utils/apis/tag';
 import { Tag } from 'types/tag';
 import { useEffect } from 'react';
-import { TagTip } from './TagTip';
+import { TagTip } from '../tags/TagTip';
 import { createTodo } from 'utils/apis/todo';
 import { TodoCreateRequest } from 'types/todo';
 import { stringNotEmpty } from 'utils/hooks/useValidation';

@@ -41,7 +41,7 @@ export const TodoList: React.VFC = () => {
       {isLoading && '読み込み中です'}
 
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        {draggableItems && (
+        {draggableItems && draggableItems.length !== 0 ? (
           <Droppable key="droppable" droppableId="droppable">
             {(provided) => (
               <CardListContainer
@@ -73,6 +73,8 @@ export const TodoList: React.VFC = () => {
               </CardListContainer>
             )}
           </Droppable>
+        ) : (
+          <EmptyMessage>タスクがありません</EmptyMessage>
         )}
       </DragDropContext>
 
@@ -86,4 +88,10 @@ const CardListContainer = styled.ul`
   > li:not(:first-child) {
     margin-top: 0.5rem;
   }
+`;
+
+const EmptyMessage = styled.p`
+  color: ${(p) => p.theme.colors.text.base};
+  font-size: 1rem;
+  font-weight: bold;
 `;
