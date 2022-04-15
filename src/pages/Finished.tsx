@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { SafeArea } from 'components/common/SafeArea';
+import { FinishedTodoList } from 'components/todos/finished/FinishedTodoList';
 
 export const Finished: React.VFC = () => {
   return (
@@ -9,6 +10,7 @@ export const Finished: React.VFC = () => {
       <IconTitle>
         <FaRegCalendarAlt />
         <h1>履歴</h1>
+        <FinishedTodoList />
       </IconTitle>
     </SafeArea>
   );
