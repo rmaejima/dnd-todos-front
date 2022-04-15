@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaRegClock } from 'react-icons/fa';
 import { Todo } from 'types/todo';
 import { formatDateToString } from 'utils/date';
-import { TagTip } from './TagTip';
+import { TagTip } from '../tags/TagTip';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
 import { finishTodo } from 'utils/apis/todo';
