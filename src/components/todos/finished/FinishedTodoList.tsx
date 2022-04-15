@@ -11,12 +11,15 @@ export const FinishedTodoList: React.VFC = () => {
       {isLoading && '読み込み中です'}
 
       <CardListContainer>
-        {todos &&
+        {todos && todos.length !== 0 ? (
           todos.map((todo) => (
             <li key={todo.id}>
               <TodoCard todo={todo} disabled />
             </li>
-          ))}
+          ))
+        ) : (
+          <EmptyMessage>完了したタスクがありません</EmptyMessage>
+        )}
       </CardListContainer>
     </>
   );
@@ -27,4 +30,10 @@ const CardListContainer = styled.ul`
   > li:not(:first-child) {
     margin-top: 0.5rem;
   }
+`;
+
+const EmptyMessage = styled.p`
+  color: ${(p) => p.theme.colors.text.base};
+  font-size: 1rem;
+  font-weight: bold;
 `;
