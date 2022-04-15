@@ -1,34 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { SafeArea } from 'components/common/SafeArea';
 import { FinishedTodoList } from 'components/todos/finished/FinishedTodoList';
+import { PageTitle } from 'components/common/PageTitle';
 
 export const Finished: React.VFC = () => {
   return (
     <SafeArea>
-      <IconTitle>
+      <PageTitle>
         <FaRegCalendarAlt />
         <h1>履歴</h1>
-      </IconTitle>
+      </PageTitle>
       <FinishedTodoList />
     </SafeArea>
   );
 };
-
-const IconTitle = styled.div`
-  display: flex;
-  align-items: center;
-
-  margin-bottom: 2rem;
-  color: ${(p) => p.theme.colors.text.base};
-  font-size: 1.5rem;
-  font-weight: bold;
-
-  > h1 {
-    margin-left: 1rem;
-    color: ${(p) => p.theme.colors.text.base};
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-`;
