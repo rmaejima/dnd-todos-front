@@ -19,19 +19,20 @@ export const TagCard: React.VFC<Props> = ({ tag }) => {
 const Container = styled.div<{ $bgColor: string }>`
   width: 100%;
   background-color: ${(p) => p.$bgColor};
-  border-radius: 6px;
+  border-radius: 10px;
   box-shadow: ${(p) => p.theme.shadows.md};
 
-  padding: 2rem;
+  padding: 1.5rem;
 `;
 
 const Title = styled.h1`
+  margin-bottom: 0.5rem;
   color: #fff;
   font-size: 1rem;
   font-weight: bold;
 `;
 
 const BottomSectionText = styled.p`
-  color: ${(p) => p.theme.colors.text.light};
+  color: #fff;
   font-size: 14px;
 `;
