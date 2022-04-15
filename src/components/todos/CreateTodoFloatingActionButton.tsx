@@ -80,7 +80,7 @@ export const CreateTodoFloatingActionButton: React.VFC<Props> = ({
   return (
     <>
       <FloatingActionContaner>
-        <IconButton color={colors.primary[500]} onClick={open}>
+        <IconButton bgColor={colors.primary[500]} onClick={open}>
           <FaPlus />
         </IconButton>
       </FloatingActionContaner>
