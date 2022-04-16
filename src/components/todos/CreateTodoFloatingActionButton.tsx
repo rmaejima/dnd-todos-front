@@ -80,7 +80,7 @@ export const CreateTodoFloatingActionButton: React.VFC<Props> = ({
   return (
     <>
       <FloatingActionContaner>
-        <IconButton color={colors.primary[500]} onClick={open}>
+        <IconButton color="#fff" bgColor={colors.primary[500]} onClick={open}>
           <FaPlus />
         </IconButton>
       </FloatingActionContaner>
@@ -173,11 +173,13 @@ const StyledTextField = styled(TextField)`
 `;
 
 const TipListContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem 1rem;
-
+  display: flex;
+  flex-wrap: wrap;
   margin: 1rem 0;
+
+  > div {
+    margin: 0.25rem;
+  }
 `;
 
 const ActionSectionContainer = styled.div`

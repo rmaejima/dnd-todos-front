@@ -1,7 +1,12 @@
 import { AxiosRequestConfig } from 'axios';
 import { useCallback } from 'react';
 import useSWR from 'swr';
-import { Todo, TodoCreateRequest } from 'types/todo';
+import {
+  Todo,
+  TodoArchiveRequest,
+  TodoCreateRequest,
+  TodoFinishRequest,
+} from 'types/todo';
 import { requestGet, requestPost } from './axios';
 
 interface TodoGetOptions {
@@ -62,8 +67,18 @@ export const createTodo = async (todo: TodoCreateRequest): Promise<Todo> => {
 };
 
 export const finishTodo = async (todoId: number): Promise<Todo> => {
-  const { data } = await requestPost<TodoResponse, Pick<Todo, 'id'>>(
+  const { data } = await requestPost<TodoResponse, TodoFinishRequest>(
     `/todos/finish`,
+    {
+      id: todoId,
+    },
+  );
+  return convertTodoResponse(data);
+};
+
+export const archiveTodo = async (todoId: number): Promise<Todo> => {
+  const { data } = await requestPost<TodoResponse, TodoArchiveRequest>(
+    `/todos/archive`,
     {
       id: todoId,
     },

@@ -4,16 +4,23 @@ import styled from 'styled-components';
 interface Props {
   onClick?: () => void;
   className?: string;
-  color: string;
+  size?: number; //px
+  color?: string;
+  bgColor?: string;
   children: React.ReactNode;
 }
 export const IconButton = React.forwardRef<HTMLButtonElement, Props>(
-  function IconButton({ onClick, className, children, color }, ref) {
+  function IconButton(
+    { onClick, className, children, size, color, bgColor },
+    ref,
+  ) {
     return (
       <Button
         className={className}
         onClick={onClick}
-        $bgColor={color}
+        $size={size}
+        $color={color}
+        $bgColor={bgColor}
         ref={ref}
       >
         {children}
@@ -22,18 +29,21 @@ export const IconButton = React.forwardRef<HTMLButtonElement, Props>(
   },
 );
 
-const Button = styled.button<{ $bgColor: string }>`
-  width: 4rem;
-  height: 4rem;
+const Button = styled.button<{
+  $size?: number;
+  $color?: string;
+  $bgColor?: string;
+}>`
+  width: ${(p) => (p.$size ? `${p.$size}px` : '4rem')};
+  height: ${(p) => (p.$size ? `${p.$size}px` : '4rem')};
   background-color: ${(p) => p.$bgColor};
   border-radius: 50%;
 
-  color: #fff;
-  font-size: 1.5rem;
+  color: ${(p) => p.$color ?? p.theme.colors.text.light};
+  font-size: ${(p) => (p.$size ? `${p.$size / 2.5}px` : '1.5rem')};
   transition: 0.1s ${(p) => p.theme.easings.easeOut};
 
   &:hover {
     opacity: 0.8;
-    box-shadow: ${(p) => p.theme.shadows.lg};
   }
 `;
