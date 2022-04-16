@@ -9,7 +9,7 @@ import { formatDateToString } from 'utils/date';
 import { TagTip } from '../tags/TagTip';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
-import { archiveTodo, finishTodo } from 'utils/apis/todo';
+import { archiveTodo, deleteTodo, finishTodo } from 'utils/apis/todo';
 import { IconButton } from 'components/common/IconButton';
 import { EditTodoModalProvider } from './modal/EditTodoModalProvider';
 
@@ -20,16 +20,12 @@ type CardType = 'NORMAL' | 'FINISHED' | 'ARCHIVED';
 interface Props {
   todo: Todo;
   cardType?: CardType;
-  onCompleteFinish?: () => void;
-  onCompleteArchive?: () => void;
-  onCompleteUpdate?: () => void;
+  onCompleteUpdate: () => void;
 }
 
 export const TodoCard: React.VFC<Props> = ({
   todo,
   cardType = 'NORMAL',
-  onCompleteFinish,
-  onCompleteArchive,
   onCompleteUpdate,
 }) => {
   const [checked, setChecked] = useState(false);
@@ -37,9 +33,9 @@ export const TodoCard: React.VFC<Props> = ({
 
   useDebounce(
     async () => {
-      if (onCompleteFinish && checked === true) {
+      if (checked === true) {
         await finishTodo(todo.id);
-        onCompleteFinish();
+        onCompleteUpdate();
       }
     },
     DEBOUNSE_TIME,
@@ -54,8 +50,15 @@ export const TodoCard: React.VFC<Props> = ({
     setArchived(true);
     await archiveTodo(todo.id);
     await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
-    onCompleteArchive && onCompleteArchive();
+    onCompleteUpdate();
     toast.info(`${todo.title}をアーカイブしました`);
+  };
+
+  const onClickDeleteButton = async () => {
+    // TODO: ダイアログ表示
+    await deleteTodo(todo.id);
+    onCompleteUpdate && onCompleteUpdate();
+    toast.info(`${todo.title}を完全に削除しました`);
   };
 
   return (
@@ -87,15 +90,7 @@ export const TodoCard: React.VFC<Props> = ({
           </div>
         ) : (
           cardType === 'ARCHIVED' && (
-            <IconButton
-              size={48}
-              onClick={
-                // TODO: 完全消去の処理
-                () => {
-                  return;
-                }
-              }
-            >
+            <IconButton size={48} onClick={onClickDeleteButton}>
               <FaTrashAlt />
             </IconButton>
           )

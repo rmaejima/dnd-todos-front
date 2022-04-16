@@ -15,7 +15,7 @@ import { updateTodo } from 'utils/apis/todo';
 
 interface Props {
   todo: Todo;
-  onCompleteUpdate?: () => void;
+  onCompleteUpdate: () => void;
   children: React.ReactNode;
 }
 
@@ -55,7 +55,6 @@ export const EditTodoModalProvider: React.VFC<Props> = ({
   };
 
   const onSubmit = async () => {
-    if (!onCompleteUpdate) return;
     close();
     const payload: TodoUpdateRequest = {
       title: titleValue,

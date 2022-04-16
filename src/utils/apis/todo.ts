@@ -8,7 +8,7 @@ import {
   TodoFinishRequest,
   TodoUpdateRequest,
 } from 'types/todo';
-import { requestGet, requestPost, requestPut } from './axios';
+import { requestDelete, requestGet, requestPost, requestPut } from './axios';
 
 interface TodoGetOptions {
   finished?: boolean;
@@ -96,4 +96,8 @@ export const archiveTodo = async (todoId: number): Promise<Todo> => {
     },
   );
   return convertTodoResponse(data);
+};
+
+export const deleteTodo = async (todoId: number) => {
+  await requestDelete(`/todos/${todoId}`);
 };
