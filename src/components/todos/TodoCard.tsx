@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useDebounce } from 'react-use';
 import { archiveTodo, finishTodo } from 'utils/apis/todo';
 import { IconButton } from 'components/common/IconButton';
+import { EditTodoButton } from './EditTodoButton';
 
 const DEBOUNSE_TIME = 600; // ms
 
@@ -18,6 +19,7 @@ interface Props {
   disabled?: boolean;
   onCompleteFinish?: () => void;
   onCompleteArchive?: () => void;
+  onCompleteUpdate?: () => void;
 }
 
 export const TodoCard: React.VFC<Props> = ({
@@ -25,6 +27,7 @@ export const TodoCard: React.VFC<Props> = ({
   disabled,
   onCompleteFinish,
   onCompleteArchive,
+  onCompleteUpdate,
 }) => {
   const [checked, setChecked] = useState(false);
   const [archived, setArchived] = useState(false);
@@ -66,9 +69,12 @@ export const TodoCard: React.VFC<Props> = ({
           <Title>{todo.title}</Title>
         </TitleSectionConrainer>
         {!disabled && (
-          <IconButton size={48} onClick={onClickArchiveButton}>
-            <FaTrashAlt />
-          </IconButton>
+          <div>
+            <EditTodoButton todo={todo} onCompleteUpdate={onCompleteUpdate} />
+            <IconButton size={48} onClick={onClickArchiveButton}>
+              <FaTrashAlt />
+            </IconButton>
+          </div>
         )}
       </TopSectionContainer>
       <BottomSectionContainer>
