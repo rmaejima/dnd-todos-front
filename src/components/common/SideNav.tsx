@@ -11,7 +11,7 @@ export const SIDENAV_WIDTH = '25rem';
 export const SideNav: React.VFC = () => {
   return (
     <Container>
-      <Title>Wantedly Todo</Title>
+      <Title>Wantedly Todos</Title>
       <LinkArea>
         <li>
           <StyledLink to="/">
