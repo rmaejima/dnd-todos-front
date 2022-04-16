@@ -31,3 +31,12 @@ export const requestPost = async <T, U = undefined>(
   options = await setOptions(options);
   return axios.post<T>(url, payload, options);
 };
+
+export const requestDelete = async <T>(
+  url: string,
+  options: AxiosRequestConfig = {},
+): Promise<AxiosResponse<T>> => {
+  options = await setOptions(options);
+
+  return axios.delete<T>(url, options);
+};
