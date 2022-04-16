@@ -14,7 +14,7 @@ export const ArchivedTodoList: React.VFC = () => {
         {todos && todos.length !== 0 ? (
           todos.map((todo) => (
             <li key={todo.id}>
-              <TodoCard todo={todo} disabled />
+              <TodoCard todo={todo} cardType="ARCHIVED" />
             </li>
           ))
         ) : (

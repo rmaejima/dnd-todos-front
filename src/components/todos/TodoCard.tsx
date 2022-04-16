@@ -15,9 +15,12 @@ import { EditTodoModalProvider } from './modal/EditTodoModalProvider';
 
 const DEBOUNSE_TIME = 600; // ms
 
+type CardType = 'NORMAL' | 'FINISHED' | 'ARCHIVED';
+
 interface Props {
   todo: Todo;
-  disabled?: boolean;
+  cardType?: CardType;
+  // disabled?: boolean;
   onCompleteFinish?: () => void;
   onCompleteArchive?: () => void;
   onCompleteUpdate?: () => void;
@@ -25,7 +28,8 @@ interface Props {
 
 export const TodoCard: React.VFC<Props> = ({
   todo,
-  disabled,
+  cardType = 'NORMAL',
+  // disabled,
   onCompleteFinish,
   onCompleteArchive,
   onCompleteUpdate,
@@ -57,10 +61,10 @@ export const TodoCard: React.VFC<Props> = ({
   };
 
   return (
-    <Container $checked={checked} $disabled={disabled} $archived={archived}>
+    <Container $checked={checked} $cardType={cardType} $archived={archived}>
       <TopSectionContainer>
         <TitleSectionConrainer>
-          {!disabled && (
+          {cardType === 'NORMAL' && (
             <CheckBox
               type="checkbox"
               checked={checked}
@@ -69,7 +73,7 @@ export const TodoCard: React.VFC<Props> = ({
           )}
           <Title>{todo.title}</Title>
         </TitleSectionConrainer>
-        {!disabled && (
+        {cardType === 'NORMAL' ? (
           <div>
             <EditTodoModalProvider
               todo={todo}
@@ -83,6 +87,20 @@ export const TodoCard: React.VFC<Props> = ({
               <FaTrashAlt />
             </IconButton>
           </div>
+        ) : (
+          cardType === 'ARCHIVED' && (
+            <IconButton
+              size={48}
+              onClick={
+                // TODO: 完全消去の処理
+                () => {
+                  return;
+                }
+              }
+            >
+              <FaTrashAlt />
+            </IconButton>
+          )
         )}
       </TopSectionContainer>
       <BottomSectionContainer>
@@ -102,12 +120,12 @@ export const TodoCard: React.VFC<Props> = ({
 
 const Container = styled.div<{
   $checked: boolean;
-  $disabled?: boolean;
+  $cardType: CardType;
   $archived: boolean;
 }>`
   width: 100%;
   background-color: ${(p) =>
-    p.$disabled
+    p.$cardType !== 'NORMAL'
       ? p.theme.colors.gray[100]
       : p.$checked
       ? p.theme.colors.primary[50]
