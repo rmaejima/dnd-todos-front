@@ -1,13 +1,14 @@
 import { Button } from 'components/common/Button';
 import { TextField } from 'components/common/TextField';
 import React from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
-import { ColorPicker, useColor } from 'react-color-palette';
+import { Color, ColorPicker, useColor } from 'react-color-palette';
 import { useModal } from 'react-hooks-use-modal';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { Tag } from 'types/tag';
-import { deleteTag } from 'utils/apis/tag';
+import { Tag, TagUpdateRequest } from 'types/tag';
+import { deleteTag, updateTag } from 'utils/apis/tag';
 import { stringNotEmpty } from 'utils/hooks/useValidation';
 import { colors } from 'utils/theme';
 
@@ -28,11 +29,34 @@ export const EditTagModalProvider: React.VFC<Props> = ({
   });
   const [color, setColor] = useColor('hex', tag.color);
   const [titleValue, setTitleValue] = useState<string>(tag.title);
+  const [initColor, setInitColor] = useState<Color>();
+
+  useEffect(() => {
+    setInitColor(color);
+  }, []);
 
   const onClickDeleteButton = async () => {
     await deleteTag(tag.id);
     toast.info(`「${tag.title}」タグを削除しました`);
     onCompleteUpdate();
+  };
+
+  const onClickUpdateButton = async () => {
+    const payload: TagUpdateRequest = {
+      title: titleValue,
+      color: color.hex,
+    };
+    await updateTag(tag.id, payload);
+    close();
+    onCompleteUpdate();
+  };
+
+  const onClickCancelButton = () => {
+    setTitleValue(tag.title);
+    if (initColor) {
+      setColor(initColor);
+    }
+    close();
   };
 
   return (
@@ -76,12 +100,12 @@ export const EditTagModalProvider: React.VFC<Props> = ({
               タグを削除
             </Button>
             <RightActionSection>
-              <Button color={colors.gray[500]} onClick={close}>
+              <Button color={colors.gray[500]} onClick={onClickCancelButton}>
                 キャンセル
               </Button>
               <Button
                 type="submit"
-                //   onClick={onSubmit}
+                onClick={onClickUpdateButton}
                 disabled={titleValue.length === 0}
               >
                 更新
