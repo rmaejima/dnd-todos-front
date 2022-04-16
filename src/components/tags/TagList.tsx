@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useAllTags } from 'utils/apis/tag';
 import { CreateTagFloatingActionButton } from './CreateTagFloatingActionButton';
+import { EditTagModalProvider } from './EditTagModalProvider';
 import { TagCard } from './TagCard';
 
 export const TagList: React.VFC = () => {
@@ -14,7 +15,13 @@ export const TagList: React.VFC = () => {
       {tags && (
         <Container>
           {tags.map((tag) => (
-            <TagCard key={tag.id} tag={tag} onCompleteDelete={refetchAllTags} />
+            <EditTagModalProvider
+              key={tag.id}
+              tag={tag}
+              onCompleteUpdate={refetchAllTags}
+            >
+              <TagCard tag={tag} />
+            </EditTagModalProvider>
           ))}
         </Container>
       )}
