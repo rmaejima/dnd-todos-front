@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { FaTrashAlt } from 'react-icons/fa';
+import { FaUndoAlt } from 'react-icons/fa';
 import { FaHistory } from 'react-icons/fa';
 import { FaEdit } from 'react-icons/fa';
 import { Todo } from 'types/todo';
@@ -9,35 +10,33 @@ import { formatDateToString } from 'utils/date';
 import { TagTip } from '../tags/TagTip';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
-import { archiveTodo, finishTodo } from 'utils/apis/todo';
+import { archiveTodo, deleteTodo, finishTodo, undoTodo } from 'utils/apis/todo';
 import { IconButton } from 'components/common/IconButton';
 import { EditTodoModalProvider } from './modal/EditTodoModalProvider';
 
 const DEBOUNSE_TIME = 600; // ms
 
+type CardType = 'NORMAL' | 'FINISHED' | 'ARCHIVED';
+
 interface Props {
   todo: Todo;
-  disabled?: boolean;
-  onCompleteFinish?: () => void;
-  onCompleteArchive?: () => void;
-  onCompleteUpdate?: () => void;
+  cardType?: CardType;
+  onCompleteUpdate: () => void;
 }
 
 export const TodoCard: React.VFC<Props> = ({
   todo,
-  disabled,
-  onCompleteFinish,
-  onCompleteArchive,
+  cardType = 'NORMAL',
   onCompleteUpdate,
 }) => {
   const [checked, setChecked] = useState(false);
-  const [archived, setArchived] = useState(false);
+  const [removed, setRemoved] = useState(false);
 
   useDebounce(
     async () => {
-      if (onCompleteFinish && checked === true) {
+      if (checked === true) {
         await finishTodo(todo.id);
-        onCompleteFinish();
+        onCompleteUpdate();
       }
     },
     DEBOUNSE_TIME,
@@ -49,18 +48,35 @@ export const TodoCard: React.VFC<Props> = ({
   };
 
   const onClickArchiveButton = async () => {
-    setArchived(true);
+    setRemoved(true);
     await archiveTodo(todo.id);
     await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
-    onCompleteArchive && onCompleteArchive();
-    toast.info(`${todo.title}をアーカイブしました`);
+    onCompleteUpdate();
+    toast.info(`「${todo.title}」をアーカイブしました`);
+  };
+
+  const onClickUndoButton = async () => {
+    setRemoved(true);
+    await undoTodo(todo.id);
+    await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
+    onCompleteUpdate();
+    toast.info(`「${todo.title}」をTODOにもどしました`);
+  };
+
+  const onClickDeleteButton = async () => {
+    setRemoved(true);
+    // TODO: ダイアログ表示
+    await deleteTodo(todo.id);
+    await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
+    onCompleteUpdate();
+    toast.info(`「${todo.title}」を完全に削除しました`);
   };
 
   return (
-    <Container $checked={checked} $disabled={disabled} $archived={archived}>
+    <Container $checked={checked} $cardType={cardType} $removed={removed}>
       <TopSectionContainer>
         <TitleSectionConrainer>
-          {!disabled && (
+          {cardType === 'NORMAL' && (
             <CheckBox
               type="checkbox"
               checked={checked}
@@ -69,7 +85,7 @@ export const TodoCard: React.VFC<Props> = ({
           )}
           <Title>{todo.title}</Title>
         </TitleSectionConrainer>
-        {!disabled && (
+        {cardType === 'NORMAL' ? (
           <div>
             <EditTodoModalProvider
               todo={todo}
@@ -83,6 +99,21 @@ export const TodoCard: React.VFC<Props> = ({
               <FaTrashAlt />
             </IconButton>
           </div>
+        ) : cardType === 'ARCHIVED' ? (
+          <div>
+            <IconButton size={48} onClick={onClickUndoButton}>
+              <FaUndoAlt />
+            </IconButton>
+            <IconButton size={48} onClick={onClickDeleteButton}>
+              <FaTrashAlt />
+            </IconButton>
+          </div>
+        ) : (
+          cardType === 'FINISHED' && (
+            <IconButton size={48} onClick={onClickUndoButton}>
+              <FaUndoAlt />
+            </IconButton>
+          )
         )}
       </TopSectionContainer>
       <BottomSectionContainer>
@@ -102,12 +133,12 @@ export const TodoCard: React.VFC<Props> = ({
 
 const Container = styled.div<{
   $checked: boolean;
-  $disabled?: boolean;
-  $archived: boolean;
+  $cardType: CardType;
+  $removed: boolean;
 }>`
   width: 100%;
   background-color: ${(p) =>
-    p.$disabled
+    p.$cardType !== 'NORMAL'
       ? p.theme.colors.gray[100]
       : p.$checked
       ? p.theme.colors.primary[50]
@@ -128,7 +159,7 @@ const Container = styled.div<{
   }
   /* 0.2s - 0.6s */
   animation: ${(p) =>
-    (p.$checked || p.$archived) &&
+    (p.$checked || p.$removed) &&
     'fadeout 0.4s ease-in-out 0.2s 1 normal forwards;'};
 `;
 

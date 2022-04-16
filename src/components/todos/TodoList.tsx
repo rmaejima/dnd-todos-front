@@ -66,8 +66,6 @@ export const TodoList: React.VFC = () => {
                       >
                         <TodoCard
                           todo={todo}
-                          onCompleteFinish={refetchAllTodos}
-                          onCompleteArchive={refetchAllTodos}
                           onCompleteUpdate={refetchAllTodos}
                         />
                       </li>

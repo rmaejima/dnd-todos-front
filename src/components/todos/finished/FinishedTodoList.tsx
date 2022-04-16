@@ -4,7 +4,9 @@ import { useAllTodos } from 'utils/apis/todo';
 import { TodoCard } from '../TodoCard';
 
 export const FinishedTodoList: React.VFC = () => {
-  const { todos, isLoading, error } = useAllTodos({ finished: true });
+  const { todos, isLoading, error, refetchAllTodos } = useAllTodos({
+    finished: true,
+  });
   return (
     <>
       {error && 'エラーが発生しました'}
@@ -14,7 +16,11 @@ export const FinishedTodoList: React.VFC = () => {
         {todos && todos.length !== 0 ? (
           todos.map((todo) => (
             <li key={todo.id}>
-              <TodoCard todo={todo} disabled />
+              <TodoCard
+                todo={todo}
+                cardType="FINISHED"
+                onCompleteUpdate={refetchAllTodos}
+              />
             </li>
           ))
         ) : (

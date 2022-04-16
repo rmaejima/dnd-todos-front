@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import useSWR from 'swr';
-import { Tag, TagCreateRequest, TagSummary, TagUpdateRequest } from 'types/tag';
+import { Tag, TagCreateRequest, TagUpdateRequest } from 'types/tag';
 import { requestDelete, requestGet, requestPost, requestPut } from './axios';
 
 export const getTags = async (endpoint: string) => {
