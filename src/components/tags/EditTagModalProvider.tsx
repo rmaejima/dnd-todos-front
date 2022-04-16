@@ -27,7 +27,7 @@ export const EditTagModalProvider: React.VFC<Props> = ({
     closeOnOverlayClick: false,
   });
   const [color, setColor] = useColor('hex', tag.color);
-  const [titleValue, setTitleValue] = useState<string>('');
+  const [titleValue, setTitleValue] = useState<string>(tag.title);
 
   const onClickDeleteButton = async () => {
     await deleteTag(tag.id);
@@ -59,14 +59,17 @@ export const EditTagModalProvider: React.VFC<Props> = ({
               dark
             />
           </PaletteContainer>
-          <Label>プレビュー</Label>
-          {titleValue.length !== 0 ? (
-            <Preview $bgColor={color.hex}>{titleValue}</Preview>
-          ) : (
-            <Label style={{ fontWeight: 'normal' }}>
-              タイトルを入力してください
-            </Label>
-          )}
+
+          <PreviewSectionContainer>
+            <Label>プレビュー</Label>
+            {titleValue.length !== 0 ? (
+              <Preview $bgColor={color.hex}>{titleValue}</Preview>
+            ) : (
+              <Label style={{ fontWeight: 'normal' }}>
+                タイトルを入力してください
+              </Label>
+            )}
+          </PreviewSectionContainer>
 
           <ActionSectionContainer>
             <Button color={colors.error[500]} onClick={onClickDeleteButton}>
@@ -122,6 +125,10 @@ const StyledTextField = styled(TextField)`
 const PaletteContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-bottom: 1rem;
+`;
+
+const PreviewSectionContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
