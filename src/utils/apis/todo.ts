@@ -80,7 +80,7 @@ export const updateTodo = async (
 };
 
 export const finishTodo = async (todoId: number): Promise<Todo> => {
-  const { data } = await requestPost<TodoResponse, TodoFinishRequest>(
+  const { data } = await requestPut<TodoResponse, TodoFinishRequest>(
     `/todos/finish`,
     {
       id: todoId,
@@ -90,7 +90,7 @@ export const finishTodo = async (todoId: number): Promise<Todo> => {
 };
 
 export const archiveTodo = async (todoId: number): Promise<Todo> => {
-  const { data } = await requestPost<TodoResponse, TodoArchiveRequest>(
+  const { data } = await requestPut<TodoResponse, TodoArchiveRequest>(
     `/todos/archive`,
     {
       id: todoId,
