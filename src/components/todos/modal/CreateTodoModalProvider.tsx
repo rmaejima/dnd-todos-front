@@ -78,7 +78,7 @@ export const CreateTodoModalProvider: React.VFC<Props> = ({
 
   return (
     <>
-      <div onClick={open}>{children}</div>
+      <OpenBox onClick={open}>{children}</OpenBox>
       <Modal>
         <ModalContainer>
           <ModalTitle>新しいTODO</ModalTitle>
@@ -132,6 +132,10 @@ export const CreateTodoModalProvider: React.VFC<Props> = ({
     </>
   );
 };
+
+const OpenBox = styled.div`
+  display: inline-block;
+`;
 
 const ModalContainer = styled.div`
   width: 35rem;
