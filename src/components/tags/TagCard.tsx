@@ -26,6 +26,10 @@ const Container = styled.div<{ $bgColor: string }>`
 `;
 
 const Title = styled.h1`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
   margin-bottom: 0.5rem;
   color: #fff;
   font-size: 1rem;
