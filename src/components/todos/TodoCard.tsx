@@ -20,7 +20,6 @@ type CardType = 'NORMAL' | 'FINISHED' | 'ARCHIVED';
 interface Props {
   todo: Todo;
   cardType?: CardType;
-  // disabled?: boolean;
   onCompleteFinish?: () => void;
   onCompleteArchive?: () => void;
   onCompleteUpdate?: () => void;
@@ -29,7 +28,6 @@ interface Props {
 export const TodoCard: React.VFC<Props> = ({
   todo,
   cardType = 'NORMAL',
-  // disabled,
   onCompleteFinish,
   onCompleteArchive,
   onCompleteUpdate,
