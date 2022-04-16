@@ -6,6 +6,7 @@ import {
   TodoArchiveRequest,
   TodoCreateRequest,
   TodoFinishRequest,
+  TodoUndoRequest,
   TodoUpdateRequest,
 } from 'types/todo';
 import { requestDelete, requestGet, requestPost, requestPut } from './axios';
@@ -91,6 +92,16 @@ export const finishTodo = async (todoId: number): Promise<Todo> => {
 export const archiveTodo = async (todoId: number): Promise<Todo> => {
   const { data } = await requestPost<TodoResponse, TodoArchiveRequest>(
     `/todos/archive`,
+    {
+      id: todoId,
+    },
+  );
+  return convertTodoResponse(data);
+};
+
+export const undoTodo = async (todoId: number): Promise<Todo> => {
+  const { data } = await requestPut<TodoResponse, TodoUndoRequest>(
+    `/todos/undo`,
     {
       id: todoId,
     },

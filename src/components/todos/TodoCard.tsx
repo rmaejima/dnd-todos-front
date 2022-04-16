@@ -10,7 +10,7 @@ import { formatDateToString } from 'utils/date';
 import { TagTip } from '../tags/TagTip';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
-import { archiveTodo, deleteTodo, finishTodo } from 'utils/apis/todo';
+import { archiveTodo, deleteTodo, finishTodo, undoTodo } from 'utils/apis/todo';
 import { IconButton } from 'components/common/IconButton';
 import { EditTodoModalProvider } from './modal/EditTodoModalProvider';
 
@@ -30,7 +30,7 @@ export const TodoCard: React.VFC<Props> = ({
   onCompleteUpdate,
 }) => {
   const [checked, setChecked] = useState(false);
-  const [archived, setArchived] = useState(false);
+  const [removed, setRemoved] = useState(false);
 
   useDebounce(
     async () => {
@@ -48,22 +48,32 @@ export const TodoCard: React.VFC<Props> = ({
   };
 
   const onClickArchiveButton = async () => {
-    setArchived(true);
+    setRemoved(true);
     await archiveTodo(todo.id);
     await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
     onCompleteUpdate();
-    toast.info(`${todo.title}をアーカイブしました`);
+    toast.info(`「${todo.title}」をアーカイブしました`);
+  };
+
+  const onClickUndoButton = async () => {
+    setRemoved(true);
+    await undoTodo(todo.id);
+    await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
+    onCompleteUpdate();
+    toast.info(`「${todo.title}」をTODOにもどしました`);
   };
 
   const onClickDeleteButton = async () => {
+    setRemoved(true);
     // TODO: ダイアログ表示
     await deleteTodo(todo.id);
-    onCompleteUpdate && onCompleteUpdate();
-    toast.info(`${todo.title}を完全に削除しました`);
+    await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
+    onCompleteUpdate();
+    toast.info(`「${todo.title}」を完全に削除しました`);
   };
 
   return (
-    <Container $checked={checked} $cardType={cardType} $archived={archived}>
+    <Container $checked={checked} $cardType={cardType} $removed={removed}>
       <TopSectionContainer>
         <TitleSectionConrainer>
           {cardType === 'NORMAL' && (
@@ -91,7 +101,7 @@ export const TodoCard: React.VFC<Props> = ({
           </div>
         ) : cardType === 'ARCHIVED' ? (
           <div>
-            <IconButton size={48} onClick={onClickDeleteButton}>
+            <IconButton size={48} onClick={onClickUndoButton}>
               <FaUndoAlt />
             </IconButton>
             <IconButton size={48} onClick={onClickDeleteButton}>
@@ -100,7 +110,7 @@ export const TodoCard: React.VFC<Props> = ({
           </div>
         ) : (
           cardType === 'FINISHED' && (
-            <IconButton size={48} onClick={onClickDeleteButton}>
+            <IconButton size={48} onClick={onClickUndoButton}>
               <FaUndoAlt />
             </IconButton>
           )
@@ -124,7 +134,7 @@ export const TodoCard: React.VFC<Props> = ({
 const Container = styled.div<{
   $checked: boolean;
   $cardType: CardType;
-  $archived: boolean;
+  $removed: boolean;
 }>`
   width: 100%;
   background-color: ${(p) =>
@@ -149,7 +159,7 @@ const Container = styled.div<{
   }
   /* 0.2s - 0.6s */
   animation: ${(p) =>
-    (p.$checked || p.$archived) &&
+    (p.$checked || p.$removed) &&
     'fadeout 0.4s ease-in-out 0.2s 1 normal forwards;'};
 `;
 

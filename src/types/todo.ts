@@ -17,3 +17,4 @@ export type TodoUpdateRequest = TodoCreateRequest;
 
 export type TodoFinishRequest = Pick<Todo, 'id'>;
 export type TodoArchiveRequest = Pick<Todo, 'id'>;
+export type TodoUndoRequest = Pick<Todo, 'id'>;
