@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { FaTrashAlt } from 'react-icons/fa';
-import { FaRegClock } from 'react-icons/fa';
+import { FaHistory } from 'react-icons/fa';
 import { Todo } from 'types/todo';
 import { formatDateToString } from 'utils/date';
 import { TagTip } from '../tags/TagTip';
@@ -78,7 +78,7 @@ export const TodoCard: React.VFC<Props> = ({
           ))}
         </TagSection>
         <PeriodSection>
-          <FaRegClock />
+          <FaHistory />
           <p>{formatDateToString(todo.updatedAt)}</p>
         </PeriodSection>
       </BottomSectionContainer>
