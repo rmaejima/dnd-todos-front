@@ -1,4 +1,3 @@
-import { IconButton } from 'components/common/IconButton';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -7,7 +6,6 @@ import styled from 'styled-components';
 import { TagSummary } from 'types/tag';
 import { Todo, TodoUpdateRequest } from 'types/todo';
 import { useAllTags } from 'utils/apis/tag';
-import { FaEdit } from 'react-icons/fa';
 import { TextField } from 'components/common/TextField';
 import { stringNotEmpty } from 'utils/hooks/useValidation';
 import { TagTip } from 'components/tags/TagTip';
@@ -18,11 +16,13 @@ import { updateTodo } from 'utils/apis/todo';
 interface Props {
   todo: Todo;
   onCompleteUpdate?: () => void;
+  children: React.ReactNode;
 }
 
-export const EditTodoButton: React.VFC<Props> = ({
+export const EditTodoModalProvider: React.VFC<Props> = ({
   todo,
   onCompleteUpdate,
+  children,
 }) => {
   const { tags, isLoading, error } = useAllTags();
   const [Modal, open, close] = useModal('root', {
@@ -71,9 +71,7 @@ export const EditTodoButton: React.VFC<Props> = ({
 
   return (
     <>
-      <IconButton size={48} onClick={open}>
-        <FaEdit />
-      </IconButton>
+      <OpenBox onClick={open}>{children}</OpenBox>
       <Modal>
         <ModalContainer>
           <ModalTitle>TODO編集</ModalTitle>
@@ -126,6 +124,10 @@ export const EditTodoButton: React.VFC<Props> = ({
     </>
   );
 };
+
+const OpenBox = styled.div`
+  display: inline-block;
+`;
 
 const ModalContainer = styled.div`
   width: 35rem;

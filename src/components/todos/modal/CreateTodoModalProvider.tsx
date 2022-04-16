@@ -1,8 +1,6 @@
 import React from 'react';
 import { useModal } from 'react-hooks-use-modal';
 import styled from 'styled-components';
-import { FaPlus } from 'react-icons/fa';
-import { IconButton } from 'components/common/IconButton';
 import { colors } from 'utils/theme';
 import { Button } from 'components/common/Button';
 import { TextField } from 'components/common/TextField';
@@ -10,17 +8,19 @@ import { useState } from 'react';
 import { useAllTags } from 'utils/apis/tag';
 import { Tag } from 'types/tag';
 import { useEffect } from 'react';
-import { TagTip } from '../tags/TagTip';
+import { TagTip } from 'components/tags/TagTip';
 import { createTodo } from 'utils/apis/todo';
 import { TodoCreateRequest } from 'types/todo';
 import { stringNotEmpty } from 'utils/hooks/useValidation';
 
 interface Props {
   onCompleteCreate: () => void;
+  children: React.ReactNode;
 }
 
-export const CreateTodoFloatingActionButton: React.VFC<Props> = ({
+export const CreateTodoModalProvider: React.VFC<Props> = ({
   onCompleteCreate,
+  children,
 }) => {
   const { tags, isLoading, error, refetchAllTags } = useAllTags();
   const [Modal, open, close] = useModal('root', {
@@ -73,17 +73,12 @@ export const CreateTodoFloatingActionButton: React.VFC<Props> = ({
 
     // モーダル内の値をリセットする
     resetStates();
-
     onCompleteCreate();
   };
 
   return (
     <>
-      <FloatingActionContaner>
-        <IconButton color="#fff" bgColor={colors.primary[500]} onClick={open}>
-          <FaPlus />
-        </IconButton>
-      </FloatingActionContaner>
+      <OpenBox onClick={open}>{children}</OpenBox>
       <Modal>
         <ModalContainer>
           <ModalTitle>新しいTODO</ModalTitle>
@@ -138,10 +133,8 @@ export const CreateTodoFloatingActionButton: React.VFC<Props> = ({
   );
 };
 
-const FloatingActionContaner = styled.div`
-  position: fixed;
-  bottom: 3rem;
-  right: 4rem;
+const OpenBox = styled.div`
+  display: inline-block;
 `;
 
 const ModalContainer = styled.div`

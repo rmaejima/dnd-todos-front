@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { FaTrashAlt } from 'react-icons/fa';
 import { FaHistory } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
 import { Todo } from 'types/todo';
 import { formatDateToString } from 'utils/date';
 import { TagTip } from '../tags/TagTip';
@@ -10,7 +11,7 @@ import { useState } from 'react';
 import { useDebounce } from 'react-use';
 import { archiveTodo, finishTodo } from 'utils/apis/todo';
 import { IconButton } from 'components/common/IconButton';
-import { EditTodoButton } from './EditTodoButton';
+import { EditTodoModalProvider } from './modal/EditTodoModalProvider';
 
 const DEBOUNSE_TIME = 600; // ms
 
@@ -70,7 +71,14 @@ export const TodoCard: React.VFC<Props> = ({
         </TitleSectionConrainer>
         {!disabled && (
           <div>
-            <EditTodoButton todo={todo} onCompleteUpdate={onCompleteUpdate} />
+            <EditTodoModalProvider
+              todo={todo}
+              onCompleteUpdate={onCompleteUpdate}
+            >
+              <IconButton size={48}>
+                <FaEdit />
+              </IconButton>
+            </EditTodoModalProvider>
             <IconButton size={48} onClick={onClickArchiveButton}>
               <FaTrashAlt />
             </IconButton>

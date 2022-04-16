@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FaPlus } from 'react-icons/fa';
 import {
   DragDropContext,
   Droppable,
@@ -8,10 +9,12 @@ import {
 } from 'react-beautiful-dnd';
 import { useAllTodos } from 'utils/apis/todo';
 import { TodoCard } from './TodoCard';
-import { CreateTodoFloatingActionButton } from './CreateTodoFloatingActionButton';
 import { useState } from 'react';
 import { Todo } from 'types/todo';
 import { useEffect } from 'react';
+import { CreateTodoModalProvider } from './modal/CreateTodoModalProvider';
+import { IconButton } from 'components/common/IconButton';
+import { colors } from 'utils/theme';
 
 export const TodoList: React.VFC = () => {
   const { todos, isLoading, error, refetchAllTodos } = useAllTodos();
@@ -80,7 +83,13 @@ export const TodoList: React.VFC = () => {
         )}
       </DragDropContext>
 
-      <CreateTodoFloatingActionButton onCompleteCreate={refetchAllTodos} />
+      <CreateTodoModalProvider onCompleteCreate={refetchAllTodos}>
+        <FloatingActionContaner>
+          <IconButton color="#fff" bgColor={colors.primary[500]}>
+            <FaPlus />
+          </IconButton>
+        </FloatingActionContaner>
+      </CreateTodoModalProvider>
     </>
   );
 };
@@ -96,4 +105,10 @@ const EmptyMessage = styled.p`
   color: ${(p) => p.theme.colors.text.base};
   font-size: 1rem;
   font-weight: bold;
+`;
+
+const FloatingActionContaner = styled.div`
+  position: fixed;
+  bottom: 3rem;
+  right: 4rem;
 `;

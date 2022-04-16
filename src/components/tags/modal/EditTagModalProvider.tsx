@@ -61,7 +61,7 @@ export const EditTagModalProvider: React.VFC<Props> = ({
 
   return (
     <>
-      <div onClick={open}>{children}</div>
+      <OpenBox onClick={open}>{children}</OpenBox>
       <Modal>
         <ModalContainer>
           <ModalTitle>タグ編集</ModalTitle>
@@ -117,6 +117,10 @@ export const EditTagModalProvider: React.VFC<Props> = ({
     </>
   );
 };
+
+const OpenBox = styled.div`
+  display: inline-block;
+`;
 
 const ModalContainer = styled.div`
   width: 35rem;
