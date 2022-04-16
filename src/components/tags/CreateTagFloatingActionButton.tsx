@@ -48,7 +48,7 @@ export const CreateTagFloatingActionButton: React.VFC<Props> = ({
   return (
     <>
       <FloatingActionContaner>
-        <IconButton bgColor={colors.primary[500]} onClick={open}>
+        <IconButton color="#fff" bgColor={colors.primary[500]} onClick={open}>
           <FaPlus />
         </IconButton>
       </FloatingActionContaner>
