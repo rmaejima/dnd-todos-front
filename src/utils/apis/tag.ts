@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import useSWR from 'swr';
 import { Tag, TagCreateRequest, TagSummary } from 'types/tag';
-import { requestGet, requestPost } from './axios';
+import { requestDelete, requestGet, requestPost } from './axios';
 
 export const getTags = async (endpoint: string) => {
   const { data } = await requestGet<Tag[]>(endpoint);
@@ -29,4 +29,8 @@ export const createTag = async (tag: TagCreateRequest): Promise<TagSummary> => {
     tag,
   );
   return data;
+};
+
+export const deleteTag = async (tagId: number) => {
+  await requestDelete(`/tags/${tagId}`);
 };
