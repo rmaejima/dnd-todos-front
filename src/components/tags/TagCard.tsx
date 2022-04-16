@@ -1,5 +1,7 @@
+import { IconButton } from 'components/common/IconButton';
 import React from 'react';
 import styled from 'styled-components';
+import { FaTimes } from 'react-icons/fa';
 import { Tag } from 'types/tag';
 import { validateColorCode } from 'utils/color';
 
@@ -10,7 +12,12 @@ interface Props {
 export const TagCard: React.VFC<Props> = ({ tag }) => {
   return (
     <Container $bgColor={validateColorCode(tag.color)}>
-      <Title>{tag.title}</Title>
+      <TopSectionContainer>
+        <Title>{tag.title}</Title>
+        <IconButton size={48} color="#fff">
+          <FaTimes />
+        </IconButton>
+      </TopSectionContainer>
       <BottomSectionText>{tag.todos.length}個のTODO</BottomSectionText>
     </Container>
   );
@@ -23,6 +30,12 @@ const Container = styled.div<{ $bgColor: string }>`
   box-shadow: ${(p) => p.theme.shadows.md};
 
   padding: 1.5rem;
+`;
+
+const TopSectionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Title = styled.h1`
