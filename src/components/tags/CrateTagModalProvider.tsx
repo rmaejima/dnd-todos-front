@@ -3,8 +3,6 @@ import { ColorPicker, useColor } from 'react-color-palette';
 import 'react-color-palette/lib/css/styles.css';
 import { useModal } from 'react-hooks-use-modal';
 import styled from 'styled-components';
-import { FaPlus } from 'react-icons/fa';
-import { IconButton } from 'components/common/IconButton';
 import { colors } from 'utils/theme';
 import { Button } from 'components/common/Button';
 import { TextField } from 'components/common/TextField';
@@ -15,17 +13,18 @@ import { TagCreateRequest } from 'types/tag';
 
 interface Props {
   onCompleteCreate: () => void;
+  children: React.ReactNode;
 }
 
-export const CreateTagFloatingActionButton: React.VFC<Props> = ({
+export const CreateTagModalProvider: React.VFC<Props> = ({
   onCompleteCreate,
+  children,
 }) => {
   const [Modal, open, close] = useModal('root', {
     preventScroll: true,
     closeOnOverlayClick: false,
   });
   const [color, setColor] = useColor('hex', colors.primary[500]);
-
   const [titleValue, setTitleValue] = useState<string>('');
 
   const resetStates = () => {
@@ -47,12 +46,7 @@ export const CreateTagFloatingActionButton: React.VFC<Props> = ({
 
   return (
     <>
-      <FloatingActionContaner>
-        <IconButton color="#fff" bgColor={colors.primary[500]} onClick={open}>
-          <FaPlus />
-        </IconButton>
-      </FloatingActionContaner>
-
+      <div onClick={open}>{children}</div>
       <Modal>
         <ModalContainer>
           <ModalTitle>新しいタグ</ModalTitle>
@@ -100,12 +94,6 @@ export const CreateTagFloatingActionButton: React.VFC<Props> = ({
     </>
   );
 };
-
-const FloatingActionContaner = styled.div`
-  position: fixed;
-  bottom: 3rem;
-  right: 4rem;
-`;
 
 const ModalContainer = styled.div`
   width: 35rem;
