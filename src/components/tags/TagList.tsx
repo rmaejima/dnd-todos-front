@@ -27,5 +27,5 @@ export const TagList: React.VFC = () => {
 const Container = styled.div`
   display: grid;
   grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
 `;
