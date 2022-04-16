@@ -8,3 +8,4 @@ export interface Tag {
 export type TagSummary = Omit<Tag, 'todos'>;
 
 export type TagCreateRequest = Pick<Tag, 'title' | 'color'>;
+export type TagUpdateRequest = TagCreateRequest;
