@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { FaTrashAlt } from 'react-icons/fa';
+import { FaUndoAlt } from 'react-icons/fa';
 import { FaHistory } from 'react-icons/fa';
 import { FaEdit } from 'react-icons/fa';
 import { Todo } from 'types/todo';
@@ -88,10 +89,19 @@ export const TodoCard: React.VFC<Props> = ({
               <FaTrashAlt />
             </IconButton>
           </div>
-        ) : (
-          cardType === 'ARCHIVED' && (
+        ) : cardType === 'ARCHIVED' ? (
+          <div>
+            <IconButton size={48} onClick={onClickDeleteButton}>
+              <FaUndoAlt />
+            </IconButton>
             <IconButton size={48} onClick={onClickDeleteButton}>
               <FaTrashAlt />
+            </IconButton>
+          </div>
+        ) : (
+          cardType === 'FINISHED' && (
+            <IconButton size={48} onClick={onClickDeleteButton}>
+              <FaUndoAlt />
             </IconButton>
           )
         )}
