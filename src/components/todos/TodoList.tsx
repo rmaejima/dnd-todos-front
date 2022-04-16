@@ -63,7 +63,7 @@ export const TodoList: React.VFC = () => {
                       >
                         <TodoCard
                           todo={todo}
-                          omCompleteFinish={refetchAllTodos}
+                          onCompleteFinish={refetchAllTodos}
                         />
                       </li>
                     )}

@@ -8,7 +8,7 @@ import { formatDateToString } from 'utils/date';
 import { TagTip } from '../tags/TagTip';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
-import { finishTodo } from 'utils/apis/todo';
+import { archiveTodo, finishTodo } from 'utils/apis/todo';
 import { IconButton } from 'components/common/IconButton';
 
 const DEBOUNSE_TIME = 600; // ms
@@ -16,21 +16,23 @@ const DEBOUNSE_TIME = 600; // ms
 interface Props {
   todo: Todo;
   disabled?: boolean;
-  omCompleteFinish?: () => void;
+  onCompleteFinish?: () => void;
+  onCompleteArchive?: () => void;
 }
 
 export const TodoCard: React.VFC<Props> = ({
   todo,
   disabled,
-  omCompleteFinish,
+  onCompleteFinish,
+  onCompleteArchive,
 }) => {
   const [checked, setChecked] = useState(false);
 
   useDebounce(
     async () => {
-      if (omCompleteFinish && checked === true) {
+      if (onCompleteFinish && checked === true) {
         await finishTodo(todo.id);
-        omCompleteFinish();
+        onCompleteFinish();
       }
     },
     DEBOUNSE_TIME,
@@ -39,6 +41,12 @@ export const TodoCard: React.VFC<Props> = ({
 
   const toggleCheck = () => {
     setChecked(!checked);
+  };
+
+  const onClickArchiveButton = async () => {
+    await archiveTodo(todo.id);
+    onCompleteArchive && onCompleteArchive();
+    toast.info(`${todo.title}をアーカイブしました`);
   };
 
   return (
@@ -54,7 +62,7 @@ export const TodoCard: React.VFC<Props> = ({
           )}
           <Title>{todo.title}</Title>
         </TitleSectionConrainer>
-        <IconButton size={48} onClick={() => toast.info('アーカイブしました')}>
+        <IconButton size={48} onClick={onClickArchiveButton}>
           <FaTrashAlt />
         </IconButton>
       </TopSectionContainer>
