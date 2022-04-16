@@ -11,7 +11,7 @@ interface Props {
 export const TagTip: React.VFC<Props> = ({ tag, onClick }) => {
   return (
     <Container onClick={onClick} $bgColor={validateColorCode(tag.color)}>
-      {tag.title}
+      <Text>{tag.title}</Text>
     </Container>
   );
 };
@@ -23,6 +23,14 @@ const Container = styled.div<{ $bgColor: string }>`
   padding: 0.25rem 1rem;
 
   text-align: center;
+`;
+
+const Text = styled.p`
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
   color: #fff;
   font-size: 0.75rem;
   font-weight: bold;
