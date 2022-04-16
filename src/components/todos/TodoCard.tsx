@@ -27,6 +27,7 @@ export const TodoCard: React.VFC<Props> = ({
   onCompleteArchive,
 }) => {
   const [checked, setChecked] = useState(false);
+  const [archived, setArchived] = useState(false);
 
   useDebounce(
     async () => {
@@ -44,13 +45,15 @@ export const TodoCard: React.VFC<Props> = ({
   };
 
   const onClickArchiveButton = async () => {
+    setArchived(true);
     await archiveTodo(todo.id);
+    await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
     onCompleteArchive && onCompleteArchive();
     toast.info(`${todo.title}をアーカイブしました`);
   };
 
   return (
-    <Container $checked={checked} $disabled={disabled}>
+    <Container $checked={checked} $disabled={disabled} $archived={archived}>
       <TopSectionContainer>
         <TitleSectionConrainer>
           {!disabled && (
@@ -62,9 +65,11 @@ export const TodoCard: React.VFC<Props> = ({
           )}
           <Title>{todo.title}</Title>
         </TitleSectionConrainer>
-        <IconButton size={48} onClick={onClickArchiveButton}>
-          <FaTrashAlt />
-        </IconButton>
+        {!disabled && (
+          <IconButton size={48} onClick={onClickArchiveButton}>
+            <FaTrashAlt />
+          </IconButton>
+        )}
       </TopSectionContainer>
       <BottomSectionContainer>
         <TagSection>
@@ -81,7 +86,11 @@ export const TodoCard: React.VFC<Props> = ({
   );
 };
 
-const Container = styled.div<{ $checked: boolean; $disabled?: boolean }>`
+const Container = styled.div<{
+  $checked: boolean;
+  $disabled?: boolean;
+  $archived: boolean;
+}>`
   width: 100%;
   background-color: ${(p) =>
     p.$disabled
@@ -105,7 +114,8 @@ const Container = styled.div<{ $checked: boolean; $disabled?: boolean }>`
   }
   /* 0.2s - 0.6s */
   animation: ${(p) =>
-    p.$checked && 'fadeout 0.4s ease-in-out 0.2s 1 normal forwards;'};
+    (p.$checked || p.$archived) &&
+    'fadeout 0.4s ease-in-out 0.2s 1 normal forwards;'};
 `;
 
 const TopSectionContainer = styled.div`
@@ -130,6 +140,10 @@ const CheckBox = styled.input`
 `;
 
 const Title = styled.h1`
+  max-width: 30rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: ${(p) => p.theme.colors.text.base};
   font-size: 1rem;
   font-weight: bold;
@@ -137,15 +151,17 @@ const Title = styled.h1`
 
 const BottomSectionContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 `;
 
 const TagSection = styled.div`
   display: flex;
+  flex-wrap: wrap;
 
-  > div:not(:first-child) {
-    margin-left: 0.25rem;
+  > div {
+    margin: 0.25rem;
   }
 `;
 
