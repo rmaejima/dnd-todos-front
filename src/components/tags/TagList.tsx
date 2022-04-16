@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaPlus } from 'react-icons/fa';
 import { useAllTags } from 'utils/apis/tag';
-import { CreateTagModalProvider } from './CrateTagModalProvider';
-import { EditTagModalProvider } from './EditTagModalProvider';
+import { CreateTagModalProvider } from './modal/CrateTagModalProvider';
+import { EditTagModalProvider } from './modal/EditTagModalProvider';
 import { TagCard } from './TagCard';
 import { colors } from 'utils/theme';
 
