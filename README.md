@@ -4,6 +4,7 @@
 - React.js(TypeScript)
 
 ## 実行手順
+※wantedly-todos-backのサーバーをあらかじめ起動してください。
 1. パッケージをインストールします。
 ```
 yarn
