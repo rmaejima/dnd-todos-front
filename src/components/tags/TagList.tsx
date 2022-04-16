@@ -14,7 +14,7 @@ export const TagList: React.VFC = () => {
       {tags && (
         <Container>
           {tags.map((tag) => (
-            <TagCard key={tag.id} tag={tag} />
+            <TagCard key={tag.id} tag={tag} onCompleteDelete={refetchAllTags} />
           ))}
         </Container>
       )}
