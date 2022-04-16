@@ -4,17 +4,28 @@ import styled from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
 import { Tag } from 'types/tag';
 import { validateColorCode } from 'utils/color';
+import { deleteTag } from 'utils/apis/tag';
+import { toast } from 'react-toastify';
 
 interface Props {
   tag: Tag;
+  onCompleteDelete?: () => void;
 }
 
-export const TagCard: React.VFC<Props> = ({ tag }) => {
+export const TagCard: React.VFC<Props> = ({ tag, onCompleteDelete }) => {
+  const onClickDeleteButton = async () => {
+    if (onCompleteDelete) {
+      await deleteTag(tag.id);
+      toast.info(`「${tag.title}」タグを削除しました`);
+      onCompleteDelete();
+    }
+  };
+
   return (
     <Container $bgColor={validateColorCode(tag.color)}>
       <TopSectionContainer>
         <Title>{tag.title}</Title>
-        <IconButton size={48} color="#fff">
+        <IconButton size={48} color="#fff" onClick={onClickDeleteButton}>
           <FaTimes />
         </IconButton>
       </TopSectionContainer>
