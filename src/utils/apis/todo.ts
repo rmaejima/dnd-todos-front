@@ -78,7 +78,7 @@ export const finishTodo = async (todoId: number): Promise<Todo> => {
 
 export const archiveTodo = async (todoId: number): Promise<Todo> => {
   const { data } = await requestPost<TodoResponse, TodoArchiveRequest>(
-    `/todos/finish`,
+    `/todos/archive`,
     {
       id: todoId,
     },
