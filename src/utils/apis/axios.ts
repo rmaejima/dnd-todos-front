@@ -32,6 +32,15 @@ export const requestPost = async <T, U = undefined>(
   return axios.post<T>(url, payload, options);
 };
 
+export const requestPut = async <T, U = undefined>(
+  url: string,
+  payload: U,
+  options: AxiosRequestConfig = {},
+): Promise<AxiosResponse<T>> => {
+  options = await setOptions(options);
+  return axios.put<T>(url, payload, options);
+};
+
 export const requestDelete = async <T>(
   url: string,
   options: AxiosRequestConfig = {},
