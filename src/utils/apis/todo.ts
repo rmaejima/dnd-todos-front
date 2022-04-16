@@ -6,8 +6,9 @@ import {
   TodoArchiveRequest,
   TodoCreateRequest,
   TodoFinishRequest,
+  TodoUpdateRequest,
 } from 'types/todo';
-import { requestGet, requestPost } from './axios';
+import { requestGet, requestPost, requestPut } from './axios';
 
 interface TodoGetOptions {
   finished?: boolean;
@@ -61,6 +62,17 @@ export const useAllTodos = (options?: TodoGetOptions) => {
 export const createTodo = async (todo: TodoCreateRequest): Promise<Todo> => {
   const { data } = await requestPost<TodoResponse, TodoCreateRequest>(
     '/todos',
+    todo,
+  );
+  return convertTodoResponse(data);
+};
+
+export const updateTodo = async (
+  todoId: number,
+  todo: TodoUpdateRequest,
+): Promise<Todo> => {
+  const { data } = await requestPut<TodoResponse, TodoCreateRequest>(
+    `/todos/${todoId}`,
     todo,
   );
   return convertTodoResponse(data);
