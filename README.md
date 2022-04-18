@@ -48,5 +48,8 @@ TODOには複数のタグをつけることができ、すでに追加されて�
 <img width="1792" alt="image" src="https://user-images.githubusercontent.com/82492270/163832046-ecc969fd-79bb-4a6d-ae4f-99902a4b18e7.png">
 
 ### 履歴画面
+履歴画面では、達成したTODOの一覧を見ることができます。また、間違えて達成しにしてまったTODOを戻すことも可能です。
+<img width="1791" alt="image" src="https://user-images.githubusercontent.com/82492270/163833318-6fd904a8-c569-454a-a512-1dad9eb60267.png">
+
 ### ゴミ箱画面
 ## 工夫した点
