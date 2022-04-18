@@ -82,51 +82,49 @@ export const CreateTodoModalProvider: React.VFC<Props> = ({
       <Modal>
         <ModalContainer>
           <ModalTitle>新しいTODO</ModalTitle>
-          <Label>タイトル</Label>
-          <StyledTextField
-            value={titleValue}
-            placeholder="Reactの勉強"
-            onChange={setTitleValue}
-            rules={[stringNotEmpty()]}
-          />
-          <Label>選択タグ</Label>
-          {error && <p>エラーが発生しました</p>}
-          {isLoading && <p>読み込み中です</p>}
-          <TipListContainer>
-            {tagValue &&
-              tagValue.map((tag) => (
-                <TagTip
-                  key={tag.id}
-                  tag={tag}
-                  onClick={() => onClickTagValueTip(tag)}
-                />
-              ))}
-          </TipListContainer>
-          <Label>タグリスト</Label>
-          {error && <p>エラーが発生しました</p>}
-          {isLoading && <p>読み込み中です</p>}
-          <TipListContainer>
-            {tagSelection &&
-              tagSelection.map((tag) => (
-                <TagTip
-                  key={tag.id}
-                  tag={tag}
-                  onClick={() => onClickTagSelectionTip(tag)}
-                />
-              ))}
-          </TipListContainer>
-          <ActionSectionContainer>
-            <Button color={colors.error[500]} onClick={close}>
-              キャンセル
-            </Button>
-            <Button
-              type="submit"
-              onClick={onSubmit}
-              disabled={titleValue.length === 0}
-            >
-              作成
-            </Button>
-          </ActionSectionContainer>
+          <form onSubmit={onSubmit}>
+            <Label>タイトル</Label>
+            <StyledTextField
+              value={titleValue}
+              placeholder="Reactの勉強"
+              onChange={setTitleValue}
+              rules={[stringNotEmpty()]}
+            />
+            <Label>選択タグ</Label>
+            {error && <p>エラーが発生しました</p>}
+            {isLoading && <p>読み込み中です</p>}
+            <TipListContainer>
+              {tagValue &&
+                tagValue.map((tag) => (
+                  <TagTip
+                    key={tag.id}
+                    tag={tag}
+                    onClick={() => onClickTagValueTip(tag)}
+                  />
+                ))}
+            </TipListContainer>
+            <Label>タグリスト</Label>
+            {error && <p>エラーが発生しました</p>}
+            {isLoading && <p>読み込み中です</p>}
+            <TipListContainer>
+              {tagSelection &&
+                tagSelection.map((tag) => (
+                  <TagTip
+                    key={tag.id}
+                    tag={tag}
+                    onClick={() => onClickTagSelectionTip(tag)}
+                  />
+                ))}
+            </TipListContainer>
+            <ActionSectionContainer>
+              <Button color={colors.error[500]} onClick={close}>
+                キャンセル
+              </Button>
+              <Button type="submit" disabled={titleValue.length === 0}>
+                作成
+              </Button>
+            </ActionSectionContainer>
+          </form>
         </ModalContainer>
       </Modal>
     </>
