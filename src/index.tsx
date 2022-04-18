@@ -1,12 +1,13 @@
+import { Router } from 'Router';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import 'ress';
-import './global.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'ress';
 import { ThemeProvider } from 'styled-components';
 import * as theme from 'utils/theme';
-import { Router } from 'Router';
+
+import './global.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

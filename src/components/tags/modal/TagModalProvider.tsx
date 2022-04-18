@@ -1,13 +1,13 @@
+import { TextField } from 'components/common/TextField';
 import React from 'react';
+import { useState } from 'react';
 import { ColorPicker, useColor } from 'react-color-palette';
 import 'react-color-palette/lib/css/styles.css';
 import { useModal } from 'react-hooks-use-modal';
 import styled from 'styled-components';
-import { colors } from 'utils/theme';
-import { TextField } from 'components/common/TextField';
-import { useState } from 'react';
-import { stringNotEmpty } from 'utils/hooks/useValidation';
 import { Tag, TagCreateRequest, TagUpdateRequest } from 'types/tag';
+import { stringNotEmpty } from 'utils/hooks/useValidation';
+import { colors } from 'utils/theme';
 
 interface Props {
   title: string;

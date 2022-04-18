@@ -1,10 +1,10 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Archived } from 'pages/Archived';
+import { Finished } from 'pages/Finished';
 import { Home } from 'pages/Home';
 import { NotFound } from 'pages/NotFound';
-import { Finished } from 'pages/Finished';
-import { Archived } from 'pages/Archived';
 import { Tags } from 'pages/Tags';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 export const Router: React.VFC = () => {
   return (

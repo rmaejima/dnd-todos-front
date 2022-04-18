@@ -1,8 +1,8 @@
+import { PageTitle } from 'components/common/PageTitle';
+import { SafeArea } from 'components/common/SafeArea';
+import { TagList } from 'components/tags/TagList';
 import React from 'react';
 import { FaTag } from 'react-icons/fa';
-import { SafeArea } from 'components/common/SafeArea';
-import { PageTitle } from 'components/common/PageTitle';
-import { TagList } from 'components/tags/TagList';
 
 export const Tags: React.VFC = () => {
   return (

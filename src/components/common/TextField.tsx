@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useValidation, ValidateRule } from 'utils/hooks/useValidation';
+import { ValidateRule, useValidation } from 'utils/hooks/useValidation';
 
 interface Props {
   value: string;

@@ -1,3 +1,6 @@
+import { Button } from 'components/common/Button';
+import { TextField } from 'components/common/TextField';
+import { TagTip } from 'components/tags/TagTip';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -6,12 +9,9 @@ import styled from 'styled-components';
 import { TagSummary } from 'types/tag';
 import { Todo, TodoUpdateRequest } from 'types/todo';
 import { useAllTags } from 'utils/apis/tag';
-import { TextField } from 'components/common/TextField';
-import { stringNotEmpty } from 'utils/hooks/useValidation';
-import { TagTip } from 'components/tags/TagTip';
-import { Button } from 'components/common/Button';
-import { colors } from 'utils/theme';
 import { updateTodo } from 'utils/apis/todo';
+import { stringNotEmpty } from 'utils/hooks/useValidation';
+import { colors } from 'utils/theme';
 
 interface Props {
   todo: Todo;

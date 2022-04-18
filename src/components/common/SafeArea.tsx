@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { SideNav, SIDENAV_WIDTH } from './SideNav';
+
+import { SIDENAV_WIDTH, SideNav } from './SideNav';
 
 interface Props {
   children?: React.ReactNode;

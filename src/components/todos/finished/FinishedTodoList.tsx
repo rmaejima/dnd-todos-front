@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useAllTodos } from 'utils/apis/todo';
+
 import { TodoCard } from '../TodoCard';
 
 export const FinishedTodoList: React.VFC = () => {
