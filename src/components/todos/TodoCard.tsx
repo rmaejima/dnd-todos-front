@@ -10,6 +10,7 @@ import { FaEdit } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useDebounce } from 'react-use';
 
+import { AlertModalProvider } from 'components/common/AlertModalProvider';
 import { Button } from 'components/common/Button';
 import { IconButton } from 'components/common/IconButton';
 
@@ -76,7 +77,6 @@ export const TodoCard: React.VFC<Props> = ({
 
   const onClickDeleteButton = async () => {
     setRemoved(true);
-    // TODO: ダイアログ表示
     await deleteTodo(todo.id);
     await new Promise((resolve) => setTimeout(resolve, DEBOUNCE_TIME));
     onCompleteUpdate();
@@ -140,9 +140,27 @@ export const TodoCard: React.VFC<Props> = ({
             <IconButton size={48} onClick={onClickUndoButton}>
               <FaUndoAlt />
             </IconButton>
-            <IconButton size={48} onClick={onClickDeleteButton}>
-              <FaTrashAlt />
-            </IconButton>
+            <AlertModalProvider
+              title="タスクを完全に削除します"
+              message="一度削除されたタスクは元に戻すことができません。削除しますか？"
+              generateActionButton={(onCancel: () => void) => (
+                <>
+                  <Button color={colors.gray[500]} onClick={onCancel}>
+                    キャンセル
+                  </Button>
+                  <Button
+                    color={colors.error[500]}
+                    onClick={onClickDeleteButton}
+                  >
+                    削除
+                  </Button>
+                </>
+              )}
+            >
+              <IconButton size={48}>
+                <FaTrashAlt />
+              </IconButton>
+            </AlertModalProvider>
           </div>
         ) : (
           cardType === 'FINISHED' && (
