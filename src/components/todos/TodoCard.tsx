@@ -10,7 +10,7 @@ import { FaEdit } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useDebounce } from 'react-use';
 
-import { AlertModalProvider } from 'components/common/AlertModalProvider';
+import { AlertDialogProvider } from 'components/common/AlertDialogProvider';
 import { Button } from 'components/common/Button';
 import { IconButton } from 'components/common/IconButton';
 
@@ -140,7 +140,7 @@ export const TodoCard: React.VFC<Props> = ({
             <IconButton size={48} onClick={onClickUndoButton}>
               <FaUndoAlt />
             </IconButton>
-            <AlertModalProvider
+            <AlertDialogProvider
               title="タスクを完全に削除します"
               message="一度削除されたタスクは元に戻すことができません。削除しますか？"
               generateActionButton={(onCancel: () => void) => (
@@ -160,7 +160,7 @@ export const TodoCard: React.VFC<Props> = ({
               <IconButton size={48}>
                 <FaTrashAlt />
               </IconButton>
-            </AlertModalProvider>
+            </AlertDialogProvider>
           </div>
         ) : (
           cardType === 'FINISHED' && (

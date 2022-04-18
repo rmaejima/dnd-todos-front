@@ -10,7 +10,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const AlertModalProvider: React.VFC<Props> = ({
+export const AlertDialogProvider: React.VFC<Props> = ({
   title,
   message,
   generateActionButton,
