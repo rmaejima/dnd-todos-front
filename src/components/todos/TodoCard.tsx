@@ -1,5 +1,5 @@
 import { TagTip } from '../tags/TagTip';
-import { EditTodoModalProvider } from './modal/EditTodoModalProvider';
+import { TodoModalProvider } from './modal/TodoModalProvider';
 import styled from 'styled-components';
 
 import React, { useState } from 'react';
@@ -10,12 +10,20 @@ import { FaEdit } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useDebounce } from 'react-use';
 
+import { Button } from 'components/common/Button';
 import { IconButton } from 'components/common/IconButton';
 
-import { archiveTodo, deleteTodo, finishTodo, undoTodo } from 'utils/apis/todo';
+import {
+  archiveTodo,
+  deleteTodo,
+  finishTodo,
+  undoTodo,
+  updateTodo,
+} from 'utils/apis/todo';
 import { formatDateToString } from 'utils/date';
+import { colors } from 'utils/theme';
 
-import { Todo } from 'types/todo';
+import { Todo, TodoUpdateRequest } from 'types/todo';
 
 const DEBOUNCE_TIME = 600; // ms
 
@@ -75,6 +83,17 @@ export const TodoCard: React.VFC<Props> = ({
     toast.info(`「${todo.title}」を完全に削除しました`);
   };
 
+  const onSubmit = async (
+    payload: TodoUpdateRequest,
+    todoId: number | undefined,
+  ) => {
+    if (!todoId) {
+      return;
+    }
+    await updateTodo(todoId, payload);
+    onCompleteUpdate();
+  };
+
   return (
     <Container $checked={checked} $cardType={cardType} $removed={removed}>
       <TopSectionContainer>
@@ -90,14 +109,28 @@ export const TodoCard: React.VFC<Props> = ({
         </TitleSectionConrainer>
         {cardType === 'NORMAL' ? (
           <div>
-            <EditTodoModalProvider
-              todo={todo}
-              onCompleteUpdate={onCompleteUpdate}
+            <TodoModalProvider
+              title="TODO編集"
+              defaultValue={todo}
+              onSubmit={onSubmit}
+              generateSubmitButton={(
+                isValid: boolean,
+                onCancel: () => void,
+              ) => (
+                <>
+                  <Button color={colors.error[500]} onClick={onCancel}>
+                    キャンセル
+                  </Button>
+                  <Button type="submit" disabled={!isValid}>
+                    更新
+                  </Button>
+                </>
+              )}
             >
               <IconButton size={48}>
                 <FaEdit />
               </IconButton>
-            </EditTodoModalProvider>
+            </TodoModalProvider>
             <IconButton size={48} onClick={onClickArchiveButton}>
               <FaTrashAlt />
             </IconButton>
