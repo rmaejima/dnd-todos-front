@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import {
   Todo,
   TodoArchiveRequest,
+  TodoChangeOrderRequest,
   TodoCreateRequest,
   TodoFinishRequest,
   TodoUndoRequest,
@@ -111,4 +112,12 @@ export const undoTodo = async (todoId: number): Promise<Todo> => {
 
 export const deleteTodo = async (todoId: number) => {
   await requestDelete(`/todos/${todoId}`);
+};
+
+export const changeTodoOrder = async (request: TodoChangeOrderRequest) => {
+  const { data } = await requestPut<string, TodoChangeOrderRequest>(
+    '/todos/change_order',
+    request,
+  );
+  return data;
 };

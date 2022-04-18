@@ -9,25 +9,26 @@ interface Props {
   bgColor?: string;
   children: React.ReactNode;
 }
-export const IconButton = React.forwardRef<HTMLButtonElement, Props>(
-  function IconButton(
-    { onClick, className, children, size, color, bgColor },
-    ref,
-  ) {
-    return (
-      <Button
-        className={className}
-        onClick={onClick}
-        $size={size}
-        $color={color}
-        $bgColor={bgColor}
-        ref={ref}
-      >
-        {children}
-      </Button>
-    );
-  },
-);
+export const IconButton: React.VFC<Props> = ({
+  className,
+  onClick,
+  size,
+  color,
+  bgColor,
+  children,
+}) => {
+  return (
+    <Button
+      className={className}
+      onClick={onClick}
+      $size={size}
+      $color={color}
+      $bgColor={bgColor}
+    >
+      {children}
+    </Button>
+  );
+};
 
 const Button = styled.button<{
   $size?: number;

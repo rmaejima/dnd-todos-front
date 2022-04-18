@@ -14,7 +14,7 @@ import { archiveTodo, deleteTodo, finishTodo, undoTodo } from 'utils/apis/todo';
 import { IconButton } from 'components/common/IconButton';
 import { EditTodoModalProvider } from './modal/EditTodoModalProvider';
 
-const DEBOUNSE_TIME = 600; // ms
+const DEBOUNCE_TIME = 600; // ms
 
 type CardType = 'NORMAL' | 'FINISHED' | 'ARCHIVED';
 
@@ -39,7 +39,7 @@ export const TodoCard: React.VFC<Props> = ({
         onCompleteUpdate();
       }
     },
-    DEBOUNSE_TIME,
+    DEBOUNCE_TIME,
     [checked],
   );
 
@@ -50,7 +50,7 @@ export const TodoCard: React.VFC<Props> = ({
   const onClickArchiveButton = async () => {
     setRemoved(true);
     await archiveTodo(todo.id);
-    await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
+    await new Promise((resolve) => setTimeout(resolve, DEBOUNCE_TIME));
     onCompleteUpdate();
     toast.info(`「${todo.title}」をアーカイブしました`);
   };
@@ -58,7 +58,7 @@ export const TodoCard: React.VFC<Props> = ({
   const onClickUndoButton = async () => {
     setRemoved(true);
     await undoTodo(todo.id);
-    await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
+    await new Promise((resolve) => setTimeout(resolve, DEBOUNCE_TIME));
     onCompleteUpdate();
     toast.info(`「${todo.title}」をTODOにもどしました`);
   };
@@ -67,7 +67,7 @@ export const TodoCard: React.VFC<Props> = ({
     setRemoved(true);
     // TODO: ダイアログ表示
     await deleteTodo(todo.id);
-    await new Promise((resolve) => setTimeout(resolve, DEBOUNSE_TIME));
+    await new Promise((resolve) => setTimeout(resolve, DEBOUNCE_TIME));
     onCompleteUpdate();
     toast.info(`「${todo.title}」を完全に削除しました`);
   };
