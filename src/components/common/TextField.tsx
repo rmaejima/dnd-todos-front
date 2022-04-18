@@ -1,8 +1,10 @@
+import styled from 'styled-components';
+
 import React from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import styled from 'styled-components';
+
 import { ValidateRule, useValidation } from 'utils/hooks/useValidation';
 
 interface Props {

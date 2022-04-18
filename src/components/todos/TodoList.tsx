@@ -1,7 +1,6 @@
-import { IconButton } from 'components/common/IconButton';
-import React, { useMemo } from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import styled from 'styled-components';
+
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   DragDropContext,
   Draggable,
@@ -10,13 +9,15 @@ import {
 } from 'react-beautiful-dnd';
 import { FaPlus } from 'react-icons/fa';
 import { useDebounce } from 'react-use';
-import styled from 'styled-components';
-import { Todo, TodoChangeOrderRequest } from 'types/todo';
+
+import { IconButton } from 'components/common/IconButton';
+import { TodoCard } from 'components/todos/TodoCard';
+import { CreateTodoModalProvider } from 'components/todos/modal/CreateTodoModalProvider';
+
 import { changeTodoOrder, useAllTodos } from 'utils/apis/todo';
 import { colors } from 'utils/theme';
 
-import { TodoCard } from './TodoCard';
-import { CreateTodoModalProvider } from './modal/CreateTodoModalProvider';
+import { Todo, TodoChangeOrderRequest } from 'types/todo';
 
 const DEBOUNCE_TIME = 300; // ms
 

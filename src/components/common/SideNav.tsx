@@ -1,10 +1,11 @@
+import styled from 'styled-components';
+
 import React from 'react';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { FaTag } from 'react-icons/fa';
 import { FaRegCalendarCheck } from 'react-icons/fa';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 
 export const SIDENAV_WIDTH = '25rem';
 

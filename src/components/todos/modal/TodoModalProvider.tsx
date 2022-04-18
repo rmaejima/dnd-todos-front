@@ -3,44 +3,55 @@ import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import { useModal } from 'react-hooks-use-modal';
 
-import { Button } from 'components/common/Button';
 import { TextField } from 'components/common/TextField';
 import { TagTip } from 'components/tags/TagTip';
 
 import { useAllTags } from 'utils/apis/tag';
-import { updateTodo } from 'utils/apis/todo';
 import { stringNotEmpty } from 'utils/hooks/useValidation';
-import { colors } from 'utils/theme';
 
 import { TagSummary } from 'types/tag';
-import { Todo, TodoUpdateRequest } from 'types/todo';
+import { Todo, TodoCreateRequest, TodoUpdateRequest } from 'types/todo';
 
 interface Props {
-  todo: Todo;
-  onCompleteUpdate: () => void;
+  title: string;
+  onSubmit: (
+    payload: TodoCreateRequest | TodoUpdateRequest,
+    todoId?: number,
+  ) => void;
+  defaultValue?: Todo;
+  generateSubmitButton: (
+    isValid: boolean,
+    onCancel: () => void,
+  ) => React.ReactNode;
   children: React.ReactNode;
 }
 
-export const EditTodoModalProvider: React.VFC<Props> = ({
-  todo,
-  onCompleteUpdate,
+export const TodoModalProvider: React.VFC<Props> = ({
+  title,
+  onSubmit,
+  defaultValue,
+  generateSubmitButton,
   children,
 }) => {
-  const { tags, isLoading, error } = useAllTags();
+  const { tags, isLoading, error, refetchAllTags } = useAllTags();
   const [Modal, open, close] = useModal('root', {
     preventScroll: true,
     closeOnOverlayClick: false,
   });
 
-  const [titleValue, setTitleValue] = useState<string>(todo.title);
+  const [titleValue, setTitleValue] = useState<string>(
+    defaultValue ? defaultValue.title : '',
+  );
   const [tagSelection, setTagSelection] = useState<TagSummary[]>([]);
-  const [tagValue, setTagValue] = useState<TagSummary[]>(todo.tags);
+  const [tagValue, setTagValue] = useState<TagSummary[]>(
+    defaultValue ? defaultValue.tags : [],
+  );
 
   useEffect(() => {
     if (!tags) {
       return;
     }
-    const usedTagIds = todo.tags.map((tag) => tag.id);
+    const usedTagIds = tagValue.map((tag) => tag.id);
     setTagSelection(tags.filter((tag) => !usedTagIds.includes(tag.id)));
   }, [tags]);
 
@@ -56,9 +67,18 @@ export const EditTodoModalProvider: React.VFC<Props> = ({
     setTagValue(tagValue.filter((t) => t.id !== tag.id));
   };
 
-  const onSubmit = async () => {
+  const resetStates = () => {
+    setTitleValue('');
+    refetchAllTags();
+    if (tags) {
+      setTagSelection(tags);
+    }
+    setTagValue([]);
+  };
+
+  const onSubmitClick = () => {
     close();
-    const payload: TodoUpdateRequest = {
+    const payload = {
       title: titleValue,
       tags: tagValue.map((tag) => {
         return {
@@ -66,8 +86,8 @@ export const EditTodoModalProvider: React.VFC<Props> = ({
         };
       }),
     };
-    await updateTodo(todo.id, payload);
-    onCompleteUpdate();
+    onSubmit(payload, defaultValue?.id);
+    resetStates();
   };
 
   return (
@@ -75,11 +95,12 @@ export const EditTodoModalProvider: React.VFC<Props> = ({
       <OpenBox onClick={open}>{children}</OpenBox>
       <Modal>
         <ModalContainer>
-          <ModalTitle>TODO編集</ModalTitle>
-          <form onSubmit={onSubmit}>
+          <ModalTitle>{title}</ModalTitle>
+          <form onSubmit={onSubmitClick}>
             <Label>タイトル</Label>
             <StyledTextField
               value={titleValue}
+              placeholder="Reactの勉強"
               onChange={setTitleValue}
               rules={[stringNotEmpty()]}
             />
@@ -110,12 +131,13 @@ export const EditTodoModalProvider: React.VFC<Props> = ({
                 ))}
             </TipListContainer>
             <ActionSectionContainer>
-              <Button color={colors.error[500]} onClick={close}>
+              {/* <Button color={colors.error[500]} onClick={close}>
                 キャンセル
               </Button>
               <Button type="submit" disabled={titleValue.length === 0}>
-                更新
-              </Button>
+                作成
+              </Button> */}
+              {generateSubmitButton(titleValue.length !== 0, close)}
             </ActionSectionContainer>
           </form>
         </ModalContainer>

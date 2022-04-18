@@ -1,19 +1,21 @@
-import { IconButton } from 'components/common/IconButton';
-import React from 'react';
-import { useState } from 'react';
+import { TagTip } from '../tags/TagTip';
+import { EditTodoModalProvider } from './modal/EditTodoModalProvider';
+import styled from 'styled-components';
+
+import React, { useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import { FaUndoAlt } from 'react-icons/fa';
 import { FaHistory } from 'react-icons/fa';
 import { FaEdit } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useDebounce } from 'react-use';
-import styled from 'styled-components';
-import { Todo } from 'types/todo';
+
+import { IconButton } from 'components/common/IconButton';
+
 import { archiveTodo, deleteTodo, finishTodo, undoTodo } from 'utils/apis/todo';
 import { formatDateToString } from 'utils/date';
 
-import { TagTip } from '../tags/TagTip';
-import { EditTodoModalProvider } from './modal/EditTodoModalProvider';
+import { Todo } from 'types/todo';
 
 const DEBOUNCE_TIME = 600; // ms
 

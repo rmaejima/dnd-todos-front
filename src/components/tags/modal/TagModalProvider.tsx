@@ -1,13 +1,17 @@
-import { TextField } from 'components/common/TextField';
+import styled from 'styled-components';
+
 import React from 'react';
 import { useState } from 'react';
 import { ColorPicker, useColor } from 'react-color-palette';
 import 'react-color-palette/lib/css/styles.css';
 import { useModal } from 'react-hooks-use-modal';
-import styled from 'styled-components';
-import { Tag, TagCreateRequest, TagUpdateRequest } from 'types/tag';
+
+import { TextField } from 'components/common/TextField';
+
 import { stringNotEmpty } from 'utils/hooks/useValidation';
 import { colors } from 'utils/theme';
+
+import { Tag, TagCreateRequest, TagUpdateRequest } from 'types/tag';
 
 interface Props {
   title: string;
@@ -90,7 +94,6 @@ export const TagModalProvider: React.VFC<Props> = ({
               </Label>
             )}
             <ActionSectionContainer>
-              {/* TODO: Inputの状態を変数で管理する */}
               {generateSubmitButton(titleValue.length !== 0, close)}
             </ActionSectionContainer>
           </form>
