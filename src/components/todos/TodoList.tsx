@@ -17,6 +17,8 @@ import { IconButton } from 'components/common/IconButton';
 import { colors } from 'utils/theme';
 import { useDebounce } from 'react-use';
 
+const DEBOUNCE_TIME = 300; // ms
+
 export const TodoList: React.VFC = () => {
   const { todos, isLoading, error, refetchAllTodos } = useAllTodos();
   const [draggableItems, setDraggableItems] = useState<Todo[]>();
@@ -45,7 +47,7 @@ export const TodoList: React.VFC = () => {
       };
       await changeTodoOrder(payload);
     },
-    100,
+    DEBOUNCE_TIME,
     [draggableItems],
   );
 
