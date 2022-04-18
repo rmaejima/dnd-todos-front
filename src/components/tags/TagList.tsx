@@ -4,14 +4,15 @@ import styled from 'styled-components';
 
 import React from 'react';
 import { FaPlus } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 import { Button } from 'components/common/Button';
 import { IconButton } from 'components/common/IconButton';
 
-import { createTag, updateTag, useAllTags } from 'utils/apis/tag';
+import { createTag, deleteTag, updateTag, useAllTags } from 'utils/apis/tag';
 import { colors } from 'utils/theme';
 
-import { TagCreateRequest, TagUpdateRequest } from 'types/tag';
+import { TagCreateRequest, TagSummary, TagUpdateRequest } from 'types/tag';
 
 export const TagList: React.VFC = () => {
   const { tags, isLoading, error, refetchAllTags } = useAllTags();
@@ -29,6 +30,12 @@ export const TagList: React.VFC = () => {
       return;
     }
     await updateTag(tagId, payload);
+    refetchAllTags();
+  };
+
+  const onClickDeleteButton = async (tag: TagSummary) => {
+    await deleteTag(tag.id);
+    toast.info(`「${tag.title}」タグを削除しました`);
     refetchAllTags();
   };
 
@@ -50,7 +57,13 @@ export const TagList: React.VFC = () => {
                 onCancel: () => void,
               ) => (
                 <>
-                  <Button color={colors.error[500]} onClick={onCancel}>
+                  <StyledButton
+                    color={colors.error[500]}
+                    onClick={() => onClickDeleteButton(tag)}
+                  >
+                    タグを削除
+                  </StyledButton>
+                  <Button color={colors.gray[500]} onClick={onCancel}>
                     キャンセル
                   </Button>
                   <Button type="submit" disabled={!isValid}>
@@ -99,4 +112,8 @@ const FloatingActionContaner = styled.div`
   position: fixed;
   bottom: 3rem;
   right: 4rem;
+`;
+
+const StyledButton = styled(Button)`
+  margin-right: auto;
 `;
