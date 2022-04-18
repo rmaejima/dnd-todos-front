@@ -1,7 +1,10 @@
-import React from 'react';
 import styled from 'styled-components';
-import { Tag } from 'types/tag';
+
+import React from 'react';
+
 import { validateColorCode } from 'utils/color';
+
+import { Tag } from 'types/tag';
 
 interface Props {
   tag: Tag;

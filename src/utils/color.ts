@@ -1,4 +1,4 @@
-import { colors } from './theme';
+import { colors } from 'utils/theme';
 
 // 引数がカラーコードではなかった場合、Grayを返す
 export const validateColorCode = (colorCode: string): string => {

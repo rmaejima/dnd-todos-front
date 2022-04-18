@@ -1,5 +1,6 @@
-import React from 'react';
 import styled from 'styled-components';
+
+import React from 'react';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { FaTag } from 'react-icons/fa';
 import { FaRegCalendarCheck } from 'react-icons/fa';

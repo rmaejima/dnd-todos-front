@@ -1,6 +1,15 @@
 import { AxiosRequestConfig } from 'axios';
-import { useCallback } from 'react';
 import useSWR from 'swr';
+
+import { useCallback } from 'react';
+
+import {
+  requestDelete,
+  requestGet,
+  requestPost,
+  requestPut,
+} from 'utils/apis/axios';
+
 import {
   Todo,
   TodoArchiveRequest,
@@ -10,7 +19,6 @@ import {
   TodoUndoRequest,
   TodoUpdateRequest,
 } from 'types/todo';
-import { requestDelete, requestGet, requestPost, requestPut } from './axios';
 
 interface TodoGetOptions {
   finished?: boolean;

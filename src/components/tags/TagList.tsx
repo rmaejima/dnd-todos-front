@@ -1,15 +1,37 @@
-import { IconButton } from 'components/common/IconButton';
-import React from 'react';
-import styled from 'styled-components';
-import { FaPlus } from 'react-icons/fa';
-import { useAllTags } from 'utils/apis/tag';
-import { CreateTagModalProvider } from 'components/tags/modal/CrateTagModalProvider';
-import { EditTagModalProvider } from 'components/tags/modal/EditTagModalProvider';
 import { TagCard } from './TagCard';
+import { TagModalProvider } from './modal/TagModalProvider';
+import styled from 'styled-components';
+
+import React from 'react';
+import { FaPlus } from 'react-icons/fa';
+
+import { Button } from 'components/common/Button';
+import { IconButton } from 'components/common/IconButton';
+
+import { createTag, updateTag, useAllTags } from 'utils/apis/tag';
 import { colors } from 'utils/theme';
+
+import { TagCreateRequest, TagUpdateRequest } from 'types/tag';
 
 export const TagList: React.VFC = () => {
   const { tags, isLoading, error, refetchAllTags } = useAllTags();
+
+  const onCreationSubmit = async (payload: TagCreateRequest) => {
+    await createTag(payload);
+    refetchAllTags();
+  };
+
+  const onUpdationSubmit = async (
+    payload: TagUpdateRequest,
+    tagId: number | undefined,
+  ) => {
+    if (!tagId) {
+      return;
+    }
+    await updateTag(tagId, payload);
+    refetchAllTags();
+  };
+
   return (
     <>
       {error && <p>エラーが発生しました</p>}
@@ -18,24 +40,51 @@ export const TagList: React.VFC = () => {
       {tags && (
         <Container>
           {tags.map((tag) => (
-            <EditTagModalProvider
+            <TagModalProvider
               key={tag.id}
-              tag={tag}
-              onCompleteUpdate={refetchAllTags}
+              title="タグ編集"
+              defaultValue={tag}
+              onSubmit={onUpdationSubmit}
+              generateSubmitButton={(
+                isValid: boolean,
+                onCancel: () => void,
+              ) => (
+                <>
+                  <Button color={colors.error[500]} onClick={onCancel}>
+                    キャンセル
+                  </Button>
+                  <Button type="submit" disabled={!isValid}>
+                    更新
+                  </Button>
+                </>
+              )}
             >
               <TagCard tag={tag} />
-            </EditTagModalProvider>
+            </TagModalProvider>
           ))}
         </Container>
       )}
 
-      <CreateTagModalProvider onCompleteCreate={refetchAllTags}>
+      <TagModalProvider
+        title="新しいタグ"
+        onSubmit={onCreationSubmit}
+        generateSubmitButton={(isValid: boolean, onCancel: () => void) => (
+          <>
+            <Button color={colors.error[500]} onClick={onCancel}>
+              キャンセル
+            </Button>
+            <Button type="submit" disabled={!isValid}>
+              作成
+            </Button>
+          </>
+        )}
+      >
         <FloatingActionContaner>
           <IconButton color="#fff" bgColor={colors.primary[500]}>
             <FaPlus />
           </IconButton>
         </FloatingActionContaner>
-      </CreateTagModalProvider>
+      </TagModalProvider>
     </>
   );
 };

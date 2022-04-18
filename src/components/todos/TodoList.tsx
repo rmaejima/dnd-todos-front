@@ -1,21 +1,24 @@
-import React, { useMemo } from 'react';
+import { TodoModalProvider } from './modal/TodoModalProvider';
 import styled from 'styled-components';
-import { FaPlus } from 'react-icons/fa';
+
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   DragDropContext,
-  Droppable,
   Draggable,
   DropResult,
+  Droppable,
 } from 'react-beautiful-dnd';
-import { changeTodoOrder, useAllTodos } from 'utils/apis/todo';
-import { TodoCard } from './TodoCard';
-import { useState } from 'react';
-import { Todo, TodoChangeOrderRequest } from 'types/todo';
-import { useEffect } from 'react';
-import { CreateTodoModalProvider } from './modal/CreateTodoModalProvider';
-import { IconButton } from 'components/common/IconButton';
-import { colors } from 'utils/theme';
+import { FaPlus } from 'react-icons/fa';
 import { useDebounce } from 'react-use';
+
+import { Button } from 'components/common/Button';
+import { IconButton } from 'components/common/IconButton';
+import { TodoCard } from 'components/todos/TodoCard';
+
+import { changeTodoOrder, createTodo, useAllTodos } from 'utils/apis/todo';
+import { colors } from 'utils/theme';
+
+import { Todo, TodoChangeOrderRequest, TodoCreateRequest } from 'types/todo';
 
 const DEBOUNCE_TIME = 300; // ms
 
@@ -65,6 +68,11 @@ export const TodoList: React.VFC = () => {
     setDraggableItems(items);
   };
 
+  const onSubmit = async (payload: TodoCreateRequest) => {
+    await createTodo(payload);
+    refetchAllTodos();
+  };
+
   return (
     <>
       {error && 'エラーが発生しました'}
@@ -108,13 +116,26 @@ export const TodoList: React.VFC = () => {
         )}
       </DragDropContext>
 
-      <CreateTodoModalProvider onCompleteCreate={refetchAllTodos}>
+      <TodoModalProvider
+        title="新しいTODO"
+        onSubmit={onSubmit}
+        generateSubmitButton={(isValid: boolean, onCancel: () => void) => (
+          <>
+            <Button color={colors.error[500]} onClick={onCancel}>
+              キャンセル
+            </Button>
+            <Button type="submit" disabled={!isValid}>
+              作成
+            </Button>
+          </>
+        )}
+      >
         <FloatingActionContaner>
           <IconButton color="#fff" bgColor={colors.primary[500]}>
             <FaPlus />
           </IconButton>
         </FloatingActionContaner>
-      </CreateTodoModalProvider>
+      </TodoModalProvider>
     </>
   );
 };
