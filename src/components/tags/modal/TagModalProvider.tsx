@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ColorPicker, useColor } from 'react-color-palette';
 import 'react-color-palette/lib/css/styles.css';
 import { useModal } from 'react-hooks-use-modal';
