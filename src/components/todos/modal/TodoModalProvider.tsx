@@ -68,6 +68,9 @@ export const TodoModalProvider: React.VFC<Props> = ({
   };
 
   const resetStates = () => {
+    if (defaultValue) {
+      return;
+    }
     setTitleValue('');
     refetchAllTags();
     if (tags) {
@@ -131,12 +134,6 @@ export const TodoModalProvider: React.VFC<Props> = ({
                 ))}
             </TipListContainer>
             <ActionSectionContainer>
-              {/* <Button color={colors.error[500]} onClick={close}>
-                キャンセル
-              </Button>
-              <Button type="submit" disabled={titleValue.length === 0}>
-                作成
-              </Button> */}
               {generateSubmitButton(titleValue.length !== 0, close)}
             </ActionSectionContainer>
           </form>
