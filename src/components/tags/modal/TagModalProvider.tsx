@@ -145,6 +145,7 @@ const Preview = styled.div<{ $bgColor: string }>`
   background-color: ${(p) => p.$bgColor};
   border-radius: 0.75rem;
 
+  margin-bottom: 1rem;
   padding: 0.25rem 1rem;
   color: #fff;
   font-size: 0.75rem;
