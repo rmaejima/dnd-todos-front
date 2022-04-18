@@ -4,44 +4,56 @@ import 'react-color-palette/lib/css/styles.css';
 import { useModal } from 'react-hooks-use-modal';
 import styled from 'styled-components';
 import { colors } from 'utils/theme';
-import { Button } from 'components/common/Button';
 import { TextField } from 'components/common/TextField';
 import { useState } from 'react';
 import { stringNotEmpty } from 'utils/hooks/useValidation';
-import { createTag } from 'utils/apis/tag';
-import { TagCreateRequest } from 'types/tag';
+import { Tag, TagCreateRequest, TagUpdateRequest } from 'types/tag';
 
 interface Props {
-  onCompleteCreate: () => void;
+  title: string;
+  onSubmit: (
+    payload: TagCreateRequest | TagUpdateRequest,
+    tagId?: number,
+  ) => void;
+  defaultValue?: Tag;
+  generateSubmitButton: (
+    isValid: boolean,
+    onCancel: () => void,
+  ) => React.ReactNode;
   children: React.ReactNode;
 }
 
-export const CreateTagModalProvider: React.VFC<Props> = ({
-  onCompleteCreate,
+export const TagModalProvider: React.VFC<Props> = ({
+  title,
+  onSubmit,
+  defaultValue,
+  generateSubmitButton,
   children,
 }) => {
   const [Modal, open, close] = useModal('root', {
     preventScroll: true,
     closeOnOverlayClick: false,
   });
-  const [color, setColor] = useColor('hex', colors.primary[500]);
-  const [titleValue, setTitleValue] = useState<string>('');
+  const [color, setColor] = useColor(
+    'hex',
+    defaultValue ? defaultValue.color : colors.primary[500],
+  );
+  const [titleValue, setTitleValue] = useState<string>(
+    defaultValue ? defaultValue.title : '',
+  );
 
   const resetStates = () => {
-    setTitleValue('');
+    if (!defaultValue) setTitleValue('');
   };
 
-  const onSubmit = async () => {
+  const onClickSubmit = () => {
     close();
-    const payload: TagCreateRequest = {
+    const payload = {
       title: titleValue,
       color: color.hex,
     };
-    await createTag(payload);
-
-    // モーダル内の値をリセットする
+    onSubmit(payload, defaultValue?.id);
     resetStates();
-    onCompleteCreate();
   };
 
   return (
@@ -49,46 +61,39 @@ export const CreateTagModalProvider: React.VFC<Props> = ({
       <OpenBox onClick={open}>{children}</OpenBox>
       <Modal>
         <ModalContainer>
-          <ModalTitle>新しいタグ</ModalTitle>
-          <Label>タイトル</Label>
-          <StyledTextField
-            value={titleValue}
-            placeholder="タスク"
-            onChange={setTitleValue}
-            rules={[stringNotEmpty()]}
-          />
-          <Label>カラー</Label>
-          <PaletteContainer>
-            <ColorPicker
-              width={456}
-              height={228}
-              color={color}
-              onChange={setColor}
-              hideHSV
-              dark
+          <ModalTitle>{title}</ModalTitle>
+          <form onSubmit={onClickSubmit}>
+            <Label>タイトル</Label>
+            <StyledTextField
+              value={titleValue}
+              placeholder="タスク"
+              onChange={setTitleValue}
+              rules={[stringNotEmpty()]}
             />
-          </PaletteContainer>
-          <Label>プレビュー</Label>
-          {titleValue.length !== 0 ? (
-            <Preview $bgColor={color.hex}>{titleValue}</Preview>
-          ) : (
-            <Label style={{ fontWeight: 'normal' }}>
-              タイトルを入力してください
-            </Label>
-          )}
-
-          <ActionSectionContainer>
-            <Button color={colors.error[500]} onClick={close}>
-              キャンセル
-            </Button>
-            <Button
-              type="submit"
-              onClick={onSubmit}
-              disabled={titleValue.length === 0}
-            >
-              作成
-            </Button>
-          </ActionSectionContainer>
+            <Label>カラー</Label>
+            <PaletteContainer>
+              <ColorPicker
+                width={456}
+                height={228}
+                color={color}
+                onChange={setColor}
+                hideHSV
+                dark
+              />
+            </PaletteContainer>
+            <Label>プレビュー</Label>
+            {titleValue.length !== 0 ? (
+              <Preview $bgColor={color.hex}>{titleValue}</Preview>
+            ) : (
+              <Label style={{ fontWeight: 'normal' }}>
+                タイトルを入力してください
+              </Label>
+            )}
+            <ActionSectionContainer>
+              {/* TODO: Inputの状態を変数で管理する */}
+              {generateSubmitButton(titleValue.length !== 0, close)}
+            </ActionSectionContainer>
+          </form>
         </ModalContainer>
       </Modal>
     </>
