@@ -7,7 +7,7 @@
 ※wantedly-todos-backのサーバーをあらかじめ起動してください。
 1. 環境変数を設定します。
 ```
-cp .env.sample .env
+cp .env.example .env
 ```
 2. パッケージをインストールします。
 ```
