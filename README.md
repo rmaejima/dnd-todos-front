@@ -26,14 +26,10 @@ TODO一覧を確認、作成、編集、アーカイブ、達成、順番入れ�
 - ゴミ箱アイコンをクリックすることでTODOをアーカイブすることができます。アーカイブされたTODOはゴミ箱ページで確認することができます。
 - チェックボックスをクリックすることにより、TODOを完了することができます。なお、チェックを入れてから一定時間変更可能な時間を設けており、その時間内にチェックを外すことでTODOの完了をキャンセルすることが可能となっています。また、TODOはドラッグにより順番を入れ替えることが可能となっています。変更された順番はデータベースに反映されるため、アプリを閉じた後でも順番は保持されるようになっております。
 
-タスクがある場合
-<img width="1778" alt="image" src="https://user-images.githubusercontent.com/82492270/163829652-f754f4c8-51f1-4d2e-befd-6a353f9fa7aa.png">
-
-タスクがない場合
-<img width="1779" alt="image" src="https://user-images.githubusercontent.com/82492270/163829042-f681482c-02d6-4657-9f79-928463fd67a0.png">
+<img width="1792" alt="image" src="https://user-images.githubusercontent.com/82492270/167989642-c081a2a7-2716-467d-ad38-2e697ecb026f.png">
 
 TODO作成、編集
-<img width="1787" alt="image" src="https://user-images.githubusercontent.com/82492270/163829832-53fc3bc2-75e7-4e4b-bfd1-d7af48bb4564.png">
+<img width="1778" alt="image" src="https://user-images.githubusercontent.com/82492270/167989750-9bf1ef2a-c028-4bde-b284-7a36d764416a.png">
 
 ### タグページ
 タグ一覧を確認、作成、編集、削除を行うことができるページです。
@@ -44,24 +40,24 @@ TODO作成、編集
 - 各タグカードをクリックすることで編集を行うことが可能で、削除することもできます。
 
 タグ一覧
-<img width="1778" alt="image" src="https://user-images.githubusercontent.com/82492270/163831357-f9f12efe-1100-44e5-8381-c12cee7d2bce.png">
+<img width="1787" alt="image" src="https://user-images.githubusercontent.com/82492270/167989823-35bcabe8-3c53-4617-ab07-665a176f75f0.png">
 
 タグ作成
-<img width="1792" alt="image" src="https://user-images.githubusercontent.com/82492270/163831963-527ddad9-a931-4346-bb65-f429f830b7aa.png">
+<img width="1786" alt="image" src="https://user-images.githubusercontent.com/82492270/167989860-06210364-7cec-49ed-b3a6-c138f5ffd9e2.png">
 
 タグ編集
-<img width="1792" alt="image" src="https://user-images.githubusercontent.com/82492270/163832046-ecc969fd-79bb-4a6d-ae4f-99902a4b18e7.png">
+<img width="1783" alt="image" src="https://user-images.githubusercontent.com/82492270/167989899-c38455d5-f63f-4b54-83a1-87a5435776a4.png">
 
 ### 履歴ページ
 履歴ページでは、達成したTODOの一覧を見ることができます。また、間違えて達成しにしてまったTODOを戻すことも可能です。
-<img width="1791" alt="image" src="https://user-images.githubusercontent.com/82492270/163833318-6fd904a8-c569-454a-a512-1dad9eb60267.png">
+<img width="1784" alt="image" src="https://user-images.githubusercontent.com/82492270/167989958-d9ef8520-5345-4ebf-a9c1-0584e53d0d22.png">
 
 ### ゴミ箱ページ
 ゴミ箱ページでは、アーカイブされたTODOの一覧を確認することができます。アーカイブされたTODOを戻すことも可能です。アーカイブされたTODOを完全に削除する場合には警告ダイアログが表示されます。
 
 アーカイブされたTODO一覧
-<img width="1787" alt="image" src="https://user-images.githubusercontent.com/82492270/163833691-a047ea1a-5a4f-45f8-a250-c084a35477e1.png">
+<img width="1778" alt="image" src="https://user-images.githubusercontent.com/82492270/167989999-6f747168-f5ac-4b8f-95f5-cb1534fcb81c.png">
 
 アラートダイアログ
-<img width="1783" alt="image" src="https://user-images.githubusercontent.com/82492270/163833747-40b50012-eb22-4c59-9a6f-d2fa770902ef.png">
+<img width="1783" alt="image" src="https://user-images.githubusercontent.com/82492270/167990018-6e1d48c1-d01c-4685-a83d-084bc1c89e9e.png">
 
